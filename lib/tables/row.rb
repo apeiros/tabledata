@@ -37,15 +37,15 @@ module Tables
     end
 
     def at_header(name)
-      index = @table.index_for_header(a)
-      raise NameError, "No column named #{a}" unless index
+      index = @table.index_for_header(name)
+      raise NameError, "No column named #{name}" unless index
 
       @data[index]
     end
 
     def at_accessor(name)
-      index = @table.index_for_accessor(a)
-      raise NameError, "No column named #{a}" unless index
+      index = @table.index_for_accessor(name)
+      raise NameError, "No column named #{name}" unless index
 
       @data[index]
     end
