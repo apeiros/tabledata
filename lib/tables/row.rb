@@ -6,10 +6,16 @@ module Tables
     attr_reader :index
     attr_reader :data
 
+    include Enumerable
+
     def initialize(table, index, data)
       @table  = table
       @index  = index
       @data   = data
+    end
+
+    def each(&block)
+      @data.each(&block)
     end
 
     # @see #slice for a faster way to use ranges or offset+length
