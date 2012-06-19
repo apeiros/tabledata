@@ -14,6 +14,9 @@ module Tables
     }
 
     def self.from_file(path, options=nil)
+      options ||= {}
+      options[:table_class] ||= self
+
       case path
         when /\.csv$/ then Parser.parse_csv(path, options)
         when /\.xls$/ then Parser.parse_xls(path, options)
