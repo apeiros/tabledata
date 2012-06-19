@@ -35,9 +35,10 @@ module Tables
     def parse_csv(file, options=nil)
       require_library 'csv', "To parse CSV files, the gem 'csv' must be installed." # Should not really happen, in 1.9, csv is part of stdlib and should be present
 
-      data      = read_file(file, options && options[:encoding])
-      seperator = (options && options[:separator]) || Detection.guess_csv_delimiter(data)
-      table     = Table.new(options)
+      table_class = (options && options[:table_class]) || Table
+      table       = table_class.new(options)
+      data        = read_file(file, options && options[:encoding])
+      seperator   = (options && options[:separator]) || Detection.guess_csv_delimiter(data)
       CSV.parse(data,col_sep: seperator) do |row|
         table << row
       end
@@ -49,8 +50,9 @@ module Tables
       require_library 'roo', "To parse Excel .xls files, the gem 'roo' must be installed." # TODO: get rid of that dependency
       require_library 'iconv', "To parse Excel .xls files, the gem 'iconv' must be installed." # TODO: get rid of that dependency
 
-      table     = Table.new(options)
-      parser    = Excel.new(file)
+      table_class = (options && options[:table_class]) || Table
+      table       = table_class.new(options)
+      parser      = Excel.new(file)
       parser.first_row.upto(parser.last_row) do |row|
         table << parser.row(row)
       end
@@ -61,8 +63,9 @@ module Tables
     def parse_xlsx(file, options=nil)
       require_library 'roo', "To parse Excel .xlsx files, the gem 'roo' must be installed." # TODO: get rid of that dependency
 
-      table     = Table.new(options)
-      parser    = Excelx.new(file)
+      table_class = (options && options[:table_class]) || Table
+      table       = table_class.new(options)
+      parser      = Excelx.new(file)
       parser.first_row.upto(parser.last_row) do |row|
         table << parser.row(row)
       end
