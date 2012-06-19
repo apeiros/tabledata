@@ -27,6 +27,8 @@ Gem::Specification.new do |s|
     s.executables = executables unless executables.empty?
   end
 
+  s.add_dependency 'roo'
+
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1")
   s.rubygems_version          = "1.3.1"
   s.specification_version     = 3
