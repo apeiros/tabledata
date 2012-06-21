@@ -3,6 +3,7 @@
 require 'tables/parser'
 require 'tables/row'
 require 'tables/column'
+require 'tables/detection'
 
 module Tables
   class Table
@@ -16,12 +17,13 @@ module Tables
     def self.from_file(path, options=nil)
       options ||= {}
       options[:table_class] ||= self
+      options[:file_type]   || Detection.file_type_from_path(path)
 
-      case path
-        when /\.csv$/ then Parser.parse_csv(path, options)
-        when /\.xls$/ then Parser.parse_xls(path, options)
-        when /\.xlsx$/ then Parser.parse_xlsx(path, options)
-        else raise ArgumentError, "Unknown file format"
+      case options[:file_type]
+        when :csv then Parser.parse_csv(path, options)
+        when :xls then Parser.parse_xls(path, options)
+        when :xlsx then Parser.parse_xlsx(path, options)
+        else raise ArgumentError, "Unknown file format #{options[:format].inspect}"
       end
     end
 

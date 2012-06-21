@@ -61,5 +61,14 @@ module Tables
 
       out_of.max_by { |delimiter| csv[0, 10_000].count(delimiter) }
     end
+
+    def file_format_from_path(path)
+      case path
+        when /\.csv$/ then :csv
+        when /\.xls$/ then :xls
+        when /\.xlsx$/ then :xlsx
+        else raise ArgumentError, "Unknown file format for path #{path.inspect}"
+      end
+    end
   end
 end
