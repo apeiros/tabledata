@@ -79,6 +79,9 @@ module Tables
       else
         data = File.read(path, encoding: Encoding::BINARY)
         Detection.force_guessed_encoding!(data)
+        data.encode!(Encoding.default_internal) if Encoding.default_internal
+
+        data
       end
     end
   end
