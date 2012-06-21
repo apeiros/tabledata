@@ -68,6 +68,10 @@ module Tables
       @data.size
     end
 
+    def to_hash
+      Hash[@accessors.map { |accessor| [accessor, at_accessor(accessor)] }]
+    end
+
     alias to_a data
 
     def respond_to_missing?(name, include_private)
