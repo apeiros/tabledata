@@ -5,6 +5,8 @@
 # Encoding::UTF_8
 # Encoding::ISO8859_15
 
+require 'tables/exceptions'
+
 module Tables
   module Detection
     UnlikelyCharsWin1252    = "\xA0\xA1\xA2\xA3\xA4\xA5\xA6\xA7\xA8\xA9\xAA\xAB\xAC\xAD" \
@@ -67,7 +69,7 @@ module Tables
         when /\.csv$/ then :csv
         when /\.xls$/ then :xls
         when /\.xlsx$/ then :xlsx
-        else raise ArgumentError, "Unknown file format for path #{path.inspect}"
+        else raise InvalidFileType, "Unknown file format for path #{path.inspect}"
       end
     end
   end

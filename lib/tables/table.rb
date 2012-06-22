@@ -4,6 +4,7 @@ require 'tables/parser'
 require 'tables/row'
 require 'tables/column'
 require 'tables/detection'
+require 'tables/exceptions'
 
 module Tables
   class Table
@@ -23,7 +24,7 @@ module Tables
         when :csv then Parser.parse_csv(path, options)
         when :xls then Parser.parse_xls(path, options)
         when :xlsx then Parser.parse_xlsx(path, options)
-        else raise ArgumentError, "Unknown file format #{options[:file_type].inspect}"
+        else raise InvalidFileType, "Unknown file format #{options[:file_type].inspect}"
       end
     end
 
@@ -104,7 +105,7 @@ module Tables
 
     def <<(row)
       @data << Row.new(self, @data.size, row)
-      raise ArgumentError, "Invalid column count (#{@data.first.size} expected, but has #{row.size})" unless row.size == @data.first.size
+      raise InvalidColumnCount, "Invalid column count (#{@data.first.size} expected, but has #{row.size})" unless row.size == @data.first.size
 
       self
     end

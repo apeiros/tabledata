@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'tables/exceptions'
+
 module Tables
   class Row
     attr_reader :table
@@ -38,20 +40,20 @@ module Tables
         when Symbol then at_accessor(column)
         when String then at_header(column)
         when Integer then at_index(column)
-        else raise ArgumentError, "Invalid index type, expected Symbol, String or Integer, but got #{column.class}"
+        else raise InvalidColumnSpecifier, "Invalid index type, expected Symbol, String or Integer, but got #{column.class}"
       end
     end
 
     def at_header(name)
       index = @table.index_for_header(name)
-      raise NameError, "No column named #{name}" unless index
+      raise InvalidColumnName, "No column named #{name}" unless index
 
       @data[index]
     end
 
     def at_accessor(name)
       index = @table.index_for_accessor(name)
-      raise NameError, "No column named #{name}" unless index
+      raise InvalidColumnAccessor, "No column named #{name}" unless index
 
       @data[index]
     end
