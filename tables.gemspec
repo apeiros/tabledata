@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name                      = "tables"
-  s.version                   = "0.0.1"
+  s.version                   = "0.0.2"
   s.authors                   = "Stefan Rusterholz"
   s.description               = <<-DESCRIPTION.gsub(/^    /, '').chomp
     Read tabular data from various formats.
