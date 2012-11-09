@@ -44,8 +44,9 @@ module Tables
       end
     end
 
+    # The number of rows, excluding headers
     def size
-      @data.size
+      @data.size - (@has_headers ? 1 : 0)
     end
     alias length size
 
