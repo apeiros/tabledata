@@ -71,7 +71,7 @@ module Tables
     end
 
     def to_hash
-      Hash[@accessors.map { |accessor| [accessor, at_accessor(accessor)] }]
+      Hash[@table.accessors.map { |accessor| [accessor, at_accessor(accessor)] }]
     end
 
     alias to_a data
