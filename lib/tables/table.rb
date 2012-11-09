@@ -44,6 +44,11 @@ module Tables
       end
     end
 
+    def size
+      @data.size
+    end
+    alias length size
+
     def [](*args)
       body[*args]
     end
