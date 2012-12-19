@@ -31,17 +31,23 @@ module Tables
     attr_reader :accessors
 
     def initialize(options=nil)
-      options           = options ? DefaultOptions.merge(options) : DefaultOptions.dup
+      options           = options ? self::DefaultOptions.merge(options) : self::DefaultOptions.dup
       @has_headers      = options.delete(:has_headers) ? true : false
       @data             = []
       @column_count     = nil
-      @accessors        = (options.delete(:accessors) || []).map { |n| n.to_sym }
       @accessor_columns = {}
       @header_columns   = nil
+      accessors         = options.delete(:accessors)
+      if accessors.is_a?(Hash)
+        @accessors        = Hash[accessors.map { |k,v| [k.to_sym, v] }]
+      else
+        @accessors        = Hash[accessors.map.with_index { |n, i| [n.to_sym, i] }]
+      end
 
-      @accessors.each_with_index do |name, idx|
+      @accessors.each do |name, idx|
         @accessor_columns[name] = idx
       end
+      @column_accssors  = @accessor_columns.invert
     end
 
     # The number of rows, excluding headers
@@ -59,7 +65,7 @@ module Tables
     end
 
     def column_accessor(index)
-      @accessors && @accessors.at(index)
+      @column_accessors[index]
     end
 
     def column_name(index)
