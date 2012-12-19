@@ -31,7 +31,7 @@ module Tables
     attr_reader :accessors
 
     def initialize(options=nil)
-      options           = options ? self::DefaultOptions.merge(options) : self::DefaultOptions.dup
+      options           = options ? self.class::DefaultOptions.merge(options) : self.class::DefaultOptions.dup
       @has_headers      = options.delete(:has_headers) ? true : false
       @data             = []
       @column_count     = nil

@@ -83,10 +83,10 @@ module Tables
     def method_missing(name, *args, &block)
       return super unless @table.accessors?
 
-      name          =~ /^(\w+)(=)?$/
-      name, assign  = $1, $2
-      index         = @table.index_for_accessor(name)
-      arg_count     = assign ? 1 : 0
+      name              =~ /^(\w+)(=)?$/
+      name_mod, assign  = $1, $2
+      index             = @table.index_for_accessor(name_mod)
+      arg_count         = assign ? 1 : 0
 
       return super unless index
 
