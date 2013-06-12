@@ -100,7 +100,7 @@ module Tables
     end
 
     def inspect
-      sprintf "#<%s headers: %p, rows: %d>", self.class, headers?, size
+      sprintf "%s%p", self.class, to_a
     end
   end
 end
