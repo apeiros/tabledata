@@ -98,5 +98,9 @@ module Tables
         @data.at(index)
       end
     end
+
+    def inspect
+      sprintf "#<%s headers: %p, rows: %d>", self.class, headers?, size
+    end
   end
 end
