@@ -133,5 +133,9 @@ module Tables
     def to_a
       @data
     end
+
+    def inspect
+      sprintf "#<%s headers: %p, cols: %d, rows: %d>", self.class, headers?, column_count, size
+    end
   end
 end
