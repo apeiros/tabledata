@@ -95,7 +95,7 @@ module Tables
       if assign then
         @data[index] = args.first
       else
-        @data.at(index)
+        @data[index]
       end
     end
 
