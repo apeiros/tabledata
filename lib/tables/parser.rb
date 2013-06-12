@@ -52,7 +52,7 @@ module Tables
 
       table_class = (options && options[:table_class]) || Table
       table       = table_class.new(options)
-      parser      = Excel.new(file)
+      parser      = Roo::Excel.new(file)
       parser.first_row.upto(parser.last_row) do |row|
         table << parser.row(row)
       end
@@ -65,7 +65,7 @@ module Tables
 
       table_class = (options && options[:table_class]) || Table
       table       = table_class.new(options)
-      parser      = Excelx.new(file)
+      parser      = Roo::Excelx.new(file)
       parser.first_row.upto(parser.last_row) do |row|
         table << parser.row(row)
       end
