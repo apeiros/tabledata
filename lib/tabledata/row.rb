@@ -16,6 +16,7 @@ module TableData
       @data   = data
     end
 
+    # Iterate over each cell in this row
     def each(&block)
       @data.each(&block)
     end
@@ -23,6 +24,7 @@ module TableData
     # @see #slice for a faster way to use ranges or offset+length
     # @see #at_accessor for a faster way to access by name
     # @see #at_index for a faster way to access by index
+    # @see #at_header for a faster way to access by header value
     def [](a,b=nil)
       if b || a.is_a?(Range) then
         slice(a,b)
@@ -66,6 +68,7 @@ module TableData
       columns.map { |column| at(column) }
     end
 
+    # @return [Integer] The number of cells in this row
     def size
       @data.size
     end

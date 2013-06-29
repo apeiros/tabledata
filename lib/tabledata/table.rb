@@ -15,6 +15,16 @@ module TableData
       accessors:   [],
     }
 
+    # @option options [Symbol] :file_type
+    #   The file type. Nil for auto-detection (which uses the extension of the
+    #   filename), or one of :csv, :xls or :xlsx
+    # @option options [Symbol] :table_class
+    #   The class to use for this table. Defaults to self (TableData::Table)
+    #
+    # All other options are passed on to Parser.parse_csv, .parse_xls or parse_xlsx,
+    # which in turn passes remaining options on to Table#initialize
+    #
+    # @return [TableData::Table]
     def self.from_file(path, options=nil)
       options ||= {}
       options[:table_class] ||= self
@@ -122,6 +132,14 @@ module TableData
       self
     end
 
+    # Iterate over all rows in the body
+    #
+    # @see TableData::Table#each_row A method which iterates over all rows, including headers
+    #
+    # @yield [row]
+    # @yieldparam [TableData::Row]
+    #
+    # @return [self]
     def each(&block)
       body.each(&block)
     end
