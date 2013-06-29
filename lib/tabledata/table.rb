@@ -11,8 +11,9 @@ module TableData
     include Enumerable
 
     DefaultOptions = {
-      has_headers: true,
-      accessors:   [],
+      has_header: true,
+      has_footer: false,
+      accessors:  [],
     }
 
     # @option options [Symbol] :file_type
@@ -42,7 +43,7 @@ module TableData
 
     def initialize(options=nil)
       options           = options ? self.class::DefaultOptions.merge(options) : self.class::DefaultOptions.dup
-      @has_headers      = options.delete(:has_headers) ? true : false
+      @has_header       = options.delete(:has_header) ? true : false
       @data             = []
       @column_count     = nil
       @accessor_columns = {}
@@ -62,7 +63,7 @@ module TableData
 
     # The number of rows, excluding headers
     def size
-      @data.size - (@has_headers ? 1 : 0)
+      @data.size - (@has_header ? 1 : 0)
     end
     alias length size
 
@@ -101,7 +102,7 @@ module TableData
     end
 
     def index_for_header(name)
-      if @has_headers && @data.first then
+      if @has_header && @data.first then
         @header_columns ||= Hash[@data.first.each_with_index.to_a]
         @header_columns[name]
       else
@@ -114,7 +115,7 @@ module TableData
     end
 
     def headers?
-      @has_headers
+      @has_header
     end
 
     def headers
