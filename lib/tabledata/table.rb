@@ -46,19 +46,25 @@ module TableData
       @has_header       = options.delete(:has_header) ? true : false
       @data             = []
       @column_count     = nil
-      @accessor_columns = {}
       @header_columns   = nil
-      accessors         = options.delete(:accessors)
-      if accessors.is_a?(Hash)
-        @accessors        = Hash[accessors.map { |k,v| [k.to_sym, v] }]
-      else
-        @accessors        = Hash[accessors.map.with_index { |n, i| [n.to_sym, i] }]
-      end
+      @accessor_columns = {}
+      @column_accssors  = {}
+      @accessors        = [].freeze
+      self.accessors    = options.delete(:accessors)
+    end
 
-      @accessors.each do |name, idx|
-        @accessor_columns[name] = idx
+    def accessors=(accessors)
+      if accessors
+        @accessors = accessors.map(&:to_sym).freeze
+        @accessors.each_with_index do |name, idx|
+          @accessor_columns[name] = idx
+        end
+        @column_accssors  = @accessor_columns.invert
+      else
+        @accessors = [].freeze
+        @accessor_columns.clear
+        @column_accssors  = @accessor_columns.clear
       end
-      @column_accssors  = @accessor_columns.invert
     end
 
     # The number of rows, excluding headers
@@ -111,7 +117,7 @@ module TableData
     end
 
     def accessors?
-      !@accessor_columns.empty?
+      !@accessors.empty?
     end
 
     def headers?
