@@ -142,6 +142,8 @@ module TableData
     # @return [self]
     def each(&block)
       body.each(&block)
+
+      self
     end
 
     def to_nested_array
