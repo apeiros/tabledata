@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-require 'tables/detection'
-require 'tables/table'
+require 'tabledata/detection'
+require 'tabledata/table'
 require 'stringio'
 
-module Tables
+module TableData
   module Parser
   module_function
 

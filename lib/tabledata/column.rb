@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module Tables
+module TableData
   class Column
     attr_reader :table
     attr_reader :index

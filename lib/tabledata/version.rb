@@ -6,6 +6,6 @@ rescue LoadError
   require 'gem/version' # older rubygems use this
 end
 
-module Tables
+module TableData
   Version = Gem::Version.new("0.0.2")
 end

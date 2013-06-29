@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module Tables
+module TableData
   class CoercingRow < Row
     def initialize(table, index, data, coercions)
       @coercions  = coercions

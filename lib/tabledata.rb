@@ -1,11 +1,11 @@
 # encoding: utf-8
 
-require 'tables/version'
-require 'tables/table'
+require 'tabledata/version'
+require 'tabledata/table'
 
 # Tables
 # Read tabular data from various formats.
-module Tables
+module TableData
   module_function
 
   def table_from_file(path, options=nil)

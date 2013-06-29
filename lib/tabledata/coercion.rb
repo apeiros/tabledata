@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module Tables
+module TableData
   module Coercion
     @coerce = {}
 

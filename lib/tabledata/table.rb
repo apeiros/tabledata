@@ -1,12 +1,12 @@
 # encoding: utf-8
 
-require 'tables/parser'
-require 'tables/row'
-require 'tables/column'
-require 'tables/detection'
-require 'tables/exceptions'
+require 'tabledata/parser'
+require 'tabledata/row'
+require 'tabledata/column'
+require 'tabledata/detection'
+require 'tabledata/exceptions'
 
-module Tables
+module TableData
   class Table
     include Enumerable
 

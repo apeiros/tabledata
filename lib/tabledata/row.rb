@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-require 'tables/exceptions'
+require 'tabledata/exceptions'
 
-module Tables
+module TableData
   class Row
     attr_reader :table
     attr_reader :index
