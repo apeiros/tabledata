@@ -77,6 +77,22 @@ module TableData
       body[*args]
     end
 
+    def cell(row, column, default=nil)
+      row_data = row(row)
+
+      if row_data
+        row_data.at(column)
+      elsif block_given?
+        yield(self, row, column)
+      else
+        default
+      end
+    end
+
+    def row(row)
+      @data[row]
+    end
+
     def column_count
       @data.first && @data.first.size
     end
