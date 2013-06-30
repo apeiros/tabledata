@@ -38,8 +38,10 @@ module TableData
       end
     end
 
-    def to_a
-      @table.map { |row| row.at_index(@index) }
+    def to_a(include_header=true)
+      data = @table.data.transpose[@index]
+
+      include_header || !@table.headers? ? data : data[1..-1]
     end
   end
 end

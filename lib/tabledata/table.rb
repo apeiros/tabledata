@@ -5,14 +5,19 @@ require 'tabledata/row'
 require 'tabledata/column'
 require 'tabledata/detection'
 require 'tabledata/exceptions'
+require 'tabledata/presenter'
 
 module TableData
+
+  # This class represents the tabular data.
   class Table
+
     include Enumerable
 
+    # The default options for TableData::Table#initialize
     DefaultOptions = {
       has_header: true,
-      has_footer: false,
+      has_footer: false, # currently unused
       accessors:  [],
     }
 
@@ -41,10 +46,21 @@ module TableData
 
     attr_reader :accessors
 
-    def initialize(options=nil)
+    # @private
+    # The internal data structure. Do not modify.
+    attr_reader :data
+
+    def initialize(data=[], options=nil)
       options           = options ? self.class::DefaultOptions.merge(options) : self.class::DefaultOptions.dup
+      column_count      = data.first ? data.first.size : 0
       @has_header       = options.delete(:has_header) ? true : false
-      @data             = []
+      @data             = data
+      @rows             = data.map.with_index { |row, index|
+        raise InvalidColumnCount, "Invalid column count in row #{index} (#{column_count} expected, but has #{row.size})" if index > 0 && row.size != column_count
+        raise ArgumentError, "Row must be provided as Array, but got #{row.class} in row #{index}" unless row.is_a?(Array)
+
+        Row.new(self, index, row)
+      }
       @column_count     = nil
       @header_columns   = nil
       @accessor_columns = {}
@@ -53,6 +69,9 @@ module TableData
       self.accessors    = options.delete(:accessors)
     end
 
+    # @param [Array<Symbol>] accessors
+    #
+    # Define the name of the accessors used in TableData::Row.
     def accessors=(accessors)
       if accessors
         @accessors = accessors.map(&:to_sym).freeze
@@ -73,6 +92,14 @@ module TableData
     end
     alias length size
 
+    # @return [Integer] The number of columns
+    def column_count
+      @data.first ? @data.first.size : 0
+    end
+
+    # Array#[] like access to the rows in the body of the table.
+    #
+    # @return [Array<TableData::Row>]
     def [](*args)
       body[*args]
     end
@@ -90,11 +117,7 @@ module TableData
     end
 
     def row(row)
-      @data[row]
-    end
-
-    def column_count
-      @data.first && @data.first.size
+      @rows[row]
     end
 
     def column_accessor(index)
@@ -108,11 +131,7 @@ module TableData
     end
 
     def columns
-      return nil unless @data.first
-
-      (0...column_count).map { |col|
-        column(col)
-      }
+      Array.new(column_count) { |col| column(col) }
     end
 
     def column(index)
@@ -141,16 +160,21 @@ module TableData
     end
 
     def headers
-      headers? ? @data.first : nil
+      headers? ? @rows.first : nil
     end
 
     def body
-      headers? ? @data[1..-1] : @data
+      headers? ? @rows[1..-1] : @rows
     end
 
     def <<(row)
-      @data << Row.new(self, @data.size, row)
-      raise InvalidColumnCount, "Invalid column count (#{@data.first.size} expected, but has #{row.size})" unless row.size == @data.first.size
+      index  = @data.size
+
+      raise InvalidColumnCount, "Invalid column count in row #{index} (#{@data.first.size} expected, but has #{row.size})" if @data.first && row.size != @data.first.size
+      raise ArgumentError, "Row must be provided as Array, but got #{row.class} in row #{index}" unless row.is_a?(Array)
+
+      @data << row
+      @rows << Row.new(self, index, row)
 
       self
     end
@@ -164,7 +188,41 @@ module TableData
     #
     # @return [self]
     def each(&block)
+      return enum_for(__method__) unless block
+
       body.each(&block)
+
+      self
+    end
+
+    # Iterate over all rows, header and body
+    #
+    # @see TableData::Table#each A method which iterates only over body-rows
+    #
+    # @yield [row]
+    # @yieldparam [TableData::Row]
+    #
+    # @return [self]
+    def each_row(&block)
+      return enum_for(__method__) unless block
+
+      @data.each(&block)
+
+      self
+    end
+
+    # Iterate over all columns
+    #
+    # @yield [column]
+    # @yieldparam [TableData::Column]
+    #
+    # @return [self]
+    def each_column
+      return enum_for(__method__) unless block
+
+      column_count.times do |i|
+        yield column(i)
+      end
 
       self
     end
@@ -175,6 +233,10 @@ module TableData
 
     def to_a
       @data
+    end
+
+    def format(format_id, options=nil)
+      Presenter.present(self, format_id, options)
     end
 
     def inspect

@@ -19,4 +19,17 @@ module TableData
   def tables_from_file(path)
     raise "Unimplemented"
   end
+
+  def require_library(name, message)
+    $stdout, oldstdout = StringIO.new, $stdout
+    require name
+  rescue LoadError => error
+    if error.message =~ /cannot load such file -- #{Regexp.escape(name)}/ then
+      raise LibraryMissingError.new(name, message, error)
+    else
+      raise
+    end
+  ensure
+    $stdout = oldstdout
+  end
 end

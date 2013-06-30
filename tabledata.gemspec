@@ -29,6 +29,8 @@ Gem::Specification.new do |s|
     s.executables = Dir.chdir('bin') { Dir.glob('**/*').select { |f| File.executable?(f) } }
   end
 
+  s.add_dependency 'spreadsheet'
+  s.add_dependency 'prawn'
   s.add_dependency 'roo'
   s.add_dependency 'iconv'
 
