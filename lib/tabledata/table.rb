@@ -44,7 +44,11 @@ module TableData
       end
     end
 
+    # @return [Array<Symbol>] An array of all named accessors
     attr_reader :accessors
+
+    # @return [Hash<Symbol => Integer>] A hash mapping column accessor names to the column index
+    attr_reader :accessor_columns
 
     # @private
     # The internal data structure. Do not modify.
@@ -64,7 +68,7 @@ module TableData
       @column_count     = nil
       @header_columns   = nil
       @accessor_columns = {}
-      @column_accssors  = {}
+      @column_accessors  = {}
       @accessors        = [].freeze
       self.accessors    = options.delete(:accessors)
     end
@@ -78,11 +82,11 @@ module TableData
         @accessors.each_with_index do |name, idx|
           @accessor_columns[name] = idx
         end
-        @column_accssors  = @accessor_columns.invert
+        @column_accessors  = @accessor_columns.invert
       else
         @accessors = [].freeze
         @accessor_columns.clear
-        @column_accssors  = @accessor_columns.clear
+        @column_accessors  = @accessor_columns.clear
       end
     end
 

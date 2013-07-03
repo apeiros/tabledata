@@ -74,7 +74,7 @@ module TableData
     end
 
     def to_hash
-      Hash[@table.accessors.map { |accessor, index| [accessor, @data[index]] }]
+      Hash[@table.accessor_columns.map { |accessor, index| [accessor, @data[index]] }]
     end
 
     alias to_a data
