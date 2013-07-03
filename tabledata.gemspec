@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'roo'
   s.add_dependency 'iconv'
 
-  s.ruby_version              = "1.9.2"
+  s.required_ruby_version     = ">= 1.9.2"
   s.rubygems_version          = "1.3.1"
   s.specification_version     = 3
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1")
