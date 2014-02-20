@@ -10,7 +10,9 @@ module TableData
 
       def document
         pdf = Prawn::Document.new
-        pdf.table @table.data
+        tables.each do |id, table|
+          pdf.table table.data
+        end
 
         pdf
       end

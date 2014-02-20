@@ -11,17 +11,24 @@ module TableData
       Bold = Spreadsheet::Format.new weight: :bold
 
       def document
-        document          = Spreadsheet::Workbook.new
-        sheet             = document.create_worksheet(name: @options[:worksheet_name])
-        sheet.row(0).default_format = Bold if @options[:bold_headers]
+        document = Spreadsheet::Workbook.new
 
-        @table.data.each_with_index do |row, row_nr|
-          row.each_with_index do |col, col_nr|
-            sheet[row_nr, col_nr] = col
+        tables.each do |id, table|
+          sheet = document.create_worksheet(name: worksheet_name(id))
+          sheet.row(0).default_format = Bold if @options[:bold_headers]
+
+          table.data.each_with_index do |row, row_nr|
+            row.each_with_index do |col, col_nr|
+              sheet[row_nr, col_nr] = col
+            end
           end
         end
 
         document
+      end
+
+      def worksheet_name(id)
+        single_table? || id.nil? ? @options[:worksheet_name] : @options.fetch(:worksheet_names, {}).fetch(id, id.to_s)
       end
 
       def string(options=nil)
@@ -30,6 +37,8 @@ module TableData
 
       def write(path, options=nil)
         document.write(path)
+
+        path
       end
     end
   end

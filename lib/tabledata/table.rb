@@ -15,11 +15,15 @@ module TableData
     include Enumerable
 
     # The default options for TableData::Table#initialize
-    DefaultOptions = {
-      has_header: true,
-      has_footer: false, # currently unused
-      accessors:  [],
-    }
+    # Must be a method because the values should be new objects each time
+    def self.default_options
+      {
+        has_header: true,
+        has_footer: false, # currently unused
+        accessors:  [],
+        name:       'table',
+      }
+    end
 
     # @option options [Symbol] :file_type
     #   The file type. Nil for auto-detection (which uses the extension of the
@@ -35,13 +39,18 @@ module TableData
       options ||= {}
       options[:table_class] ||= self
       options[:file_type]   ||= Detection.file_type_from_path(path)
+      options[:name]        ||= File.basename(path).sub(/\.(?:csv|xlsx?)\z/, '')
 
       case options[:file_type]
         when :csv then Parser.parse_csv(path, options)
-        when :xls then Parser.parse_xls(path, options)
-        when :xlsx then Parser.parse_xlsx(path, options)
+        when :xls then Parser.table_from_xls(path, options)
+        when :xlsx then Parser.table_from_xlsx(path, options)
         else raise InvalidFileType, "Unknown file format #{options[:file_type].inspect}"
       end
+    end
+
+    def self.from_data(data, options)
+      new(options.merge(data: data))
     end
 
     # @return [Array<Symbol>] An array of all named accessors
@@ -54,40 +63,67 @@ module TableData
     # The internal data structure. Do not modify.
     attr_reader :data
 
-    def initialize(data=[], options=nil)
-      options           = options ? self.class::DefaultOptions.merge(options) : self.class::DefaultOptions.dup
+    # @return [String, nil] The name of the table
+    attr_reader :name
+
+    def initialize(options=nil)
+      options           = options ? self.class.default_options.merge(options) : self.class.default_options
+      if options.has_key?(:data)
+        data = options.delete(:data)
+      else
+        data = []
+        if options.has_key?(:header)
+          data << options.delete(:header)
+          options[:has_header] = true
+        end
+        data.concat(options.delete(:body)) if options.has_key?(:body)
+        if options.has_key?(:footer)
+          data << options.delete(:footer)
+          options[:has_footer] = true
+        end
+      end
+
       column_count      = data.first ? data.first.size : 0
+      @name             = options.delete(:name)
       @has_header       = options.delete(:has_header) ? true : false
+      @has_footer       = options.delete(:has_footer) ? true : false
       @data             = data
+      @header_columns   = nil
+      self.accessors    = options.delete(:accessors)
       @rows             = data.map.with_index { |row, index|
         raise InvalidColumnCount, "Invalid column count in row #{index} (#{column_count} expected, but has #{row.size})" if index > 0 && row.size != column_count
         raise ArgumentError, "Row must be provided as Array, but got #{row.class} in row #{index}" unless row.is_a?(Array)
 
         Row.new(self, index, row)
       }
-      @column_count     = nil
-      @header_columns   = nil
-      @accessor_columns = {}
-      @column_accessors  = {}
-      @accessors        = [].freeze
-      self.accessors    = options.delete(:accessors)
     end
 
-    # @param [Array<Symbol>] accessors
+    def accessors_from_header!
+      raise "Can't define accessors from headers in a table without headers" unless @has_header
+
+      self.accessors = headers.map { |val| val ? val.to_s.downcase.tr('^a-z0-9_', '_').squeeze('_').to_sym : nil }
+    end
+
+    # @param [Array<Symbol>, Hash<Symbol => Integer>, nil] accessors
     #
     # Define the name of the accessors used in TableData::Row.
     def accessors=(accessors)
-      if accessors
-        @accessors = accessors.map(&:to_sym).freeze
-        @accessors.each_with_index do |name, idx|
-          @accessor_columns[name] = idx
-        end
-        @column_accessors  = @accessor_columns.invert
-      else
-        @accessors = [].freeze
-        @accessor_columns.clear
-        @column_accessors  = @accessor_columns.clear
+      @accessor_columns = {}
+      case accessors
+        when nil
+          # nothing to do
+        when Array
+          accessors.each_with_index do |name, idx|
+            @accessor_columns[name.to_sym] = idx if name
+          end
+        when Hash
+          @accessor_columns = Hash[accessors.map { |name, index| [name.to_sym, index] }]
+        else
+          raise ArgumentError, "Expected nil, an Array or a Hash, but got #{accessors.class}"
       end
+      @accessor_columns.freeze
+      @column_accessors  = @accessor_columns.invert.freeze
+      @accessors         = @column_accessors.values_at(*0..(@column_accessors.keys.max || 0)).freeze
     end
 
     # The number of rows, excluding headers
@@ -96,9 +132,9 @@ module TableData
     end
     alias length size
 
-    # @return [Integer] The number of columns
+    # @return [Integer, nil] The number of columns. Nil if no rows are present.
     def column_count
-      @data.first ? @data.first.size : 0
+      @data.first ? @data.first.size : nil
     end
 
     # Array#[] like access to the rows in the body of the table.

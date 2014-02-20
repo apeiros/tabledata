@@ -1,8 +1,12 @@
 # encoding: utf-8
 
 module TableData
+
+  # All exceptions raised by TableData include TableData::Exception,
+  # so you can rescue all of them using `rescue TableData::Exception`.
   module Exception
   end
+
   class InvalidFileType < ArgumentError
     include Exception
   end
@@ -14,4 +18,16 @@ module TableData
   end
   class InvalidColumnName < InvalidColumnSpecifier; end
   class InvalidColumnAccessor < InvalidColumnSpecifier; end
+  class LibraryMissingError < LoadError
+    include Exception
+
+    attr_reader :name, :cause
+
+    def initialize(name, message, error)
+      @name  = name
+      @cause = error
+
+      super(message)
+    end
+  end
 end
