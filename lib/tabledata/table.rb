@@ -21,7 +21,7 @@ module TableData
         has_header: true,
         has_footer: false, # currently unused
         accessors:  [],
-        name:       'table',
+        name:       'Unnamed Table',
       }
     end
 
@@ -59,6 +59,9 @@ module TableData
     # @return [Hash<Symbol => Integer>] A hash mapping column accessor names to the column index
     attr_reader :accessor_columns
 
+    # @return [Hash<Integer => Symbol>] A hash mapping column index to the column accessor names
+    attr_reader :column_accessors
+
     # @private
     # The internal data structure. Do not modify.
     attr_reader :data
@@ -88,8 +91,8 @@ module TableData
       @has_header       = options.delete(:has_header) ? true : false
       @has_footer       = options.delete(:has_footer) ? true : false
       @data             = data
-      @header_columns   = nil
-      self.accessors    = options.delete(:accessors)
+      @header_columns   = nil                        # used for cell access by header name, e.g. table[0]["Some Cellname"]
+      self.accessors    = options.delete(:accessors) # used for cell access by accessor, e.g. table[0][:some_cell_accessor]
       @rows             = data.map.with_index { |row, index|
         raise InvalidColumnCount, "Invalid column count in row #{index} (#{column_count} expected, but has #{row.size})" if index > 0 && row.size != column_count
         raise ArgumentError, "Row must be provided as Array, but got #{row.class} in row #{index}" unless row.is_a?(Array)
@@ -98,10 +101,10 @@ module TableData
       }
     end
 
-    def accessors_from_header!
+    def accessors_from_headers!
       raise "Can't define accessors from headers in a table without headers" unless @has_header
 
-      self.accessors = headers.map { |val| val ? val.to_s.downcase.tr('^a-z0-9_', '_').squeeze('_').to_sym : nil }
+      self.accessors = headers.map { |val| (val && !val.empty?) ? val.to_s.downcase.tr('^a-z0-9_', '_').squeeze('_').gsub(/\A_|_\z/, '').to_sym : nil }
     end
 
     # @param [Array<Symbol>, Hash<Symbol => Integer>, nil] accessors
@@ -123,12 +126,12 @@ module TableData
       end
       @accessor_columns.freeze
       @column_accessors  = @accessor_columns.invert.freeze
-      @accessors         = @column_accessors.values_at(*0..(@column_accessors.keys.max || 0)).freeze
+      @accessors         = @column_accessors.values_at(*0..(@column_accessors.keys.max || -1)).freeze
     end
 
-    # The number of rows, excluding headers
+    # The number of rows, excluding headers and footer
     def size
-      @data.size - (@has_header ? 1 : 0)
+      @data.size - (@has_header ? 1 : 0) - (@has_footer ? 1 : 0)
     end
     alias length size
 
@@ -203,8 +206,22 @@ module TableData
       headers? ? @rows.first : nil
     end
 
+    def footer?
+      @has_footer
+    end
+
+    def footer
+      !footer? || (headers? && @rows.size < 2) ? nil : @rows.last
+    end
+
     def body
-      headers? ? @rows[1..-1] : @rows
+      end_offset = footer? ? -2 : -1
+
+      if headers?
+        @rows.empty? ? [] : @rows[1..end_offset]
+      else
+        @rows[0..end_offset]
+      end
     end
 
     def <<(row)

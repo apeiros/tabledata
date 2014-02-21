@@ -27,7 +27,7 @@ module TableData
       #TableData.require_library 'iconv', "To parse Excel .xls files, the gem 'iconv' must be installed." # TODO: get rid of that dependency
 
       document = Roo::Excel.new(file)
-      sheet    = options[:sheet] ? document.sheet(options[:sheet]) : document.default_sheet
+      sheet    = document.sheet(options[:sheet] || document.default_sheet)
       excel_sheet_to_table(sheet, options)
     end
 
@@ -35,7 +35,7 @@ module TableData
       TableData.require_library 'roo', "To parse Excel .xlsx files, the gem 'roo' must be installed." # TODO: get rid of that dependency
 
       document = Roo::Excelx.new(file)
-      sheet    = options[:sheet] ? document.sheet(options[:sheet]) : document.default_sheet
+      sheet    = document.sheet(options[:sheet] || document.default_sheet)
       excel_sheet_to_table(sheet, options)
     end
 
