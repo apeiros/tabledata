@@ -31,17 +31,20 @@ Read tabular data from various formats.
 
 
 
-Known Issues
-------------
+Weak Dependencies
+-----------------
 
-* The 'spreadsheet' gem on which this gem depends does not yet correctly work with ruby 2.0.
+* The 'roo' gem for .xls/.xlsx Excel file import
+* The 'spreadsheet' gem for .xls Excel file export
+* The 'prawn' gem for PDF export
+* The 'nokogiri' gem for HTML import
 
 
 
 Links
 -----
 
-* [Online API Documentation](http://rdoc.info/github/apeiros/tabledata/)
+* [Online API Documentation](http://rdoc.info/github/apeiros/tabledata/master/frames)
 * [Public Repository](https://github.com/apeiros/tabledata)
 * [Bug Reporting](https://github.com/apeiros/tabledata/issues)
 * [RubyGems Site](https://rubygems.org/gems/tabledata)
