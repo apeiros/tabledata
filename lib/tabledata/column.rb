@@ -38,10 +38,21 @@ module TableData
       end
     end
 
-    def to_a(include_header=true)
+    def to_a(options=nil)
       data = @table.data.transpose[@index]
 
-      include_header || !@table.headers? ? data : data[1..-1]
+      if options
+        start_offset = options[:include_header] && @table.headers? ? 1 : 0
+        end_offset   = options[:include_footer] && @table.footer? ? -2 : -1
+
+        data[start_offset..end_offset]
+      else
+        data
+      end
+    end
+
+    def ==(other)
+      other.is_a?(TableData::Column) && other.to_a == to_a
     end
   end
 end

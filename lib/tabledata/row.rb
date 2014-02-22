@@ -77,7 +77,10 @@ module TableData
       Hash[@table.accessor_columns.map { |accessor, index| [accessor, @data[index]] }]
     end
 
-    alias to_a data
+    def to_a
+      @data.dup
+    end
+    alias to_ary to_a
 
     def respond_to_missing?(name, include_private)
       @table.index_for_accessor(name) ? true : false
