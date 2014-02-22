@@ -9,11 +9,15 @@ require 'tabledata'
 module Kernel
   module_function
   def reset_test_files
-    p :reset
     data_dir = "#{TEST_DIR}/data"
     tmp_dir  = "#{TEST_DIR}/tmp"
     FileUtils.rm_r(tmp_dir) if File.directory?(tmp_dir)
     FileUtils.cp_r(data_dir, tmp_dir)
+  end
+
+  def remove_temporary_test_files
+    tmp_dir  = "#{TEST_DIR}/tmp"
+    FileUtils.rm_r(tmp_dir) if File.directory?(tmp_dir)
   end
 
   def test_file(name)
