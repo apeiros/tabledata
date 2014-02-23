@@ -8,6 +8,9 @@ module TableData
   module Parser
   module_function
 
+    # @private
+    # Parse a CSV to a Table
+    # Private because API might change.
     def parse_csv(file, options=nil)
       TableData.require_library 'csv', "To parse CSV files, the gem 'csv' must be installed." # Should not really happen, in 1.9, csv is part of stdlib and should be present
 
@@ -22,6 +25,9 @@ module TableData
       table
     end
 
+    # @private
+    # Parse an Excel .xls to a Table (default sheet, or the sheet passed)
+    # Private because API might change.
     def table_from_xls(file, options=nil)
       TableData.require_library 'roo', "To parse Excel .xls files, the gem 'roo' must be installed." # TODO: get rid of that dependency
       #TableData.require_library 'iconv', "To parse Excel .xls files, the gem 'iconv' must be installed." # TODO: get rid of that dependency
@@ -31,6 +37,9 @@ module TableData
       excel_sheet_to_table(sheet, options)
     end
 
+    # @private
+    # Parse an Excel .xlsx to a Table (default sheet, or the sheet passed)
+    # Private because API might change.
     def table_from_xlsx(file, options=nil)
       TableData.require_library 'roo', "To parse Excel .xlsx files, the gem 'roo' must be installed." # TODO: get rid of that dependency
 
@@ -39,6 +48,9 @@ module TableData
       excel_sheet_to_table(sheet, options)
     end
 
+    # @private
+    # Parse an Excel .xls to Tables (all sheets)
+    # Private because API might change.
     def tables_from_xls(file, options=nil)
       TableData.require_library 'roo', "To parse Excel .xls files, the gem 'roo' must be installed." # TODO: get rid of that dependency
       #TableData.require_library 'iconv', "To parse Excel .xls files, the gem 'iconv' must be installed." # TODO: get rid of that dependency
@@ -49,6 +61,9 @@ module TableData
       Tables.new(tables)
     end
 
+    # @private
+    # Parse an Excel .xlsx to Tables (all sheets)
+    # Private because API might change.
     def tables_from_xlsx(file, options=nil)
       TableData.require_library 'roo', "To parse Excel .xlsx files, the gem 'roo' must be installed." # TODO: get rid of that dependency
 
@@ -58,6 +73,9 @@ module TableData
       Tables.new(tables)
     end
 
+    # @private
+    # Convert a sheet from a Roo::Excel or Roo::ExcelX to a Table
+    # Private because API might change.
     def excel_sheet_to_table(excel, options)
       table_class = (options && options[:table_class]) || Table
       table       = table_class.new(options)
@@ -68,6 +86,9 @@ module TableData
       table
     end
 
+    # @private
+    # Read a file in the correct encoding
+    # Private because API might change.
     def read_file(path, encoding)
       if encoding then
         File.read(path, encoding: encoding)
