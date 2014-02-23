@@ -408,13 +408,23 @@ suite "TableData::Table" do
   end
 
   test 'Table#to_nested_array' do
+    # TODO since the method might still change or even vanish
   end
 
   test 'Table#==' do
+    # TODO since the method might still change
   end
 
   test 'Table#format' do
+    table = TableData::Table.new
+
+    table.format(:xls) # allow TableData to load the presenter
+    assert_kind_of TableData::Presenters::Excel, table.format(:xls)
+    table.format(:xlsx) # allow TableData to load the presenter
+    assert_kind_of TableData::Presenters::Excel, table.format(:xlsx)
+    table.format(:csv) # allow TableData to load the presenter
+    assert_kind_of TableData::Presenters::CSV,   table.format(:csv)
+    table.format(:pdf) # allow TableData to load the presenter
+    assert_kind_of TableData::Presenters::PDF,   table.format(:pdf)
   end
-
-
 end
