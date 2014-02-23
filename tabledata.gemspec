@@ -31,10 +31,9 @@ Gem::Specification.new do |s|
     s.executables = Dir.chdir('bin') { Dir.glob('**/*').select { |f| File.executable?(f) } }
   end
 
-  s.add_dependency 'spreadsheet', '>= 0.8.5'
-  s.add_dependency 'prawn',       '>= 0.12.0'
-  s.add_dependency 'roo',         '>= 1.11.2'
-  s.add_dependency 'iconv',       '>= 1.0.3'
+  s.add_dependency 'spreadsheet', '>= 0.9.7'
+  s.add_dependency 'prawn',       '>= 0.15.0'
+  s.add_dependency 'roo',         '>= 1.13.2'
 
   s.required_ruby_version     = ">= 1.9.2"
   s.rubygems_version          = "1.3.1"
