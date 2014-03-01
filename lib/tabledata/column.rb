@@ -92,6 +92,12 @@ module TableData
       self
     end
 
+    # @return [Integer] The number of values, excluding headers and footer
+    def size
+      @table.size
+    end
+    alias length size
+
     # @param [Hash] options
     # @option options [Symbol] :include_header
     #   Defaults to true. If set to false, the header (if present) is excluded.
