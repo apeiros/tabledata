@@ -72,6 +72,7 @@ module TableData
     def size
       @data.size
     end
+    alias length size
 
     def to_hash
       Hash[@table.accessor_columns.map { |accessor, index| [accessor, @data[index]] }]
