@@ -416,6 +416,7 @@ suite "TableData::Table" do
   end
 
   test 'Table#format' do
+    # NOTE: We don't test the presenters themselves here
     table = TableData::Table.new
 
     table.format(:xls) # allow TableData to load the presenter
