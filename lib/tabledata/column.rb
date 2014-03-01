@@ -119,7 +119,27 @@ module TableData
     #   False if other is neither a Tabledata::Column, Array, or Object
     #   responding to #to_ary.
     def ==(other)
-      other.is_a?(TableData::Column) && other.to_a == to_a
+      if other.is_a?(Tabledata::Column)
+        other.to_a == @table.data.transpose[@index]
+      elsif other.is_a?(Array)
+        other == @table.data.transpose[@index]
+      elsif other.respond_to?(:to_ary)
+        other.to_ary == @table.data.transpose[@index]
+      else
+        false
+      end
+    end
+
+    # @param [Object]
+    #
+    # @return [true, false] Whether `other` is also a column and contains the same data.
+    def eql?(other)
+      other.is_a?(TableData::Column) && @table.data.transpose[@index] == other.to_a
+    end
+
+    # See Object#hash
+    def hash
+      [TableData::Column, to_a].hash
     end
   end
 end
