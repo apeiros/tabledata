@@ -430,7 +430,7 @@ module TableData
       self
     end
 
-    # @note This method might be removed
+    # Returns a deep copy of the tables internal datastructure.
     #
     # TODO: figure whether this method is needed.
     def to_nested_array
@@ -439,17 +439,16 @@ module TableData
 
     # @note This method might be changed
     #
-    # TODO: figure the proper return value for this method (deep dup?)
+    # @return [Array<Array>]
+    #   A deep copy of the tables internal datastructure, an Array of row array.
     def to_a
       @data
     end
 
     # @return [true, false]
-    #   Whether this table has the same content and properties (name, has_headers, has_footer, accessors) as another table
-    #
-    # @note This method might be changed
-    #
-    # TODO: figure whether only data should be compared
+    #   Whether this table has the same content as `other`.
+    #   Uses the #data method to get the contents.
+    #   If other has no #data method, the comparison is false.
     def ==(other)
       (
         other.is_a?(TableData::Table) &&
