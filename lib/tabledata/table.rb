@@ -173,7 +173,7 @@ module TableData
       @header_columns   = nil                        # used for cell access by header name, e.g. table[0]["Some Cellname"]
       self.accessors    = options.delete(:accessors) # used for cell access by accessor, e.g. table[0][:some_cell_accessor]
       @rows             = data.map.with_index { |row, index|
-        raise InvalidColumnCount, "Invalid column count in row #{index} (#{column_count} expected, but has #{row.size})" if index > 0 && row.size != column_count
+        raise InvalidColumnCount.new(index, row.size, column_count) if index > 0 && row.size != column_count
         raise ArgumentError, "Row must be provided as Array, but got #{row.class} in row #{index}" unless row.is_a?(Array)
 
         Row.new(self, index, row)
@@ -374,7 +374,7 @@ module TableData
         raise ArgumentError, "Row must be provided as Array or respond to `to_ary`, but got #{row.class} in row #{index}" unless row.respond_to?(:to_ary)
         raise
       end
-      raise InvalidColumnCount, "Invalid column count in row #{index} (#{@data.first.size} expected, but has #{row.size})" if @data.first && row.size != @data.first.size
+      raise InvalidColumnCount.new(index, row.size, column_count) if @data.first && row.size != @data.first.size
 
       @data << row
       @rows << Row.new(self, index, row)
