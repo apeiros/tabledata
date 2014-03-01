@@ -461,17 +461,16 @@ module TableData
 
     # Returns a deep copy of the tables internal datastructure.
     #
-    # TODO: figure whether this method is needed.
-    def to_nested_array
-      to_a.map(&:to_a)
-    end
-
-    # @note This method might be changed
+    # @note
+    #   Only rows and columns are copied, the individual values are not.
+    #   Example:
+    #
+    # @see Table#data Table#data returns the actual, uncopied, internal datastructure
     #
     # @return [Array<Array>]
     #   A deep copy of the tables internal datastructure, an Array of row array.
     def to_a
-      @data
+      @data.map(&:dup)
     end
 
     # @return [true, false]
