@@ -509,7 +509,12 @@ module TableData
 
     # See Object#inspect
     def inspect
-      sprintf "#<%s headers: %p, footer: %p, cols: %s, rows: %d>", self.class, headers?, footer?, column_count || '-', size
+      sprintf "#<%s headers: %p, footer: %p, cols: %s, rows: %d>",
+        self.class,
+        headers?,
+        footer?,
+        column_count || '-',
+        size
     end
   end
 end
