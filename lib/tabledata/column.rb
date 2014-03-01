@@ -67,8 +67,10 @@ module TableData
       return enum_for(__method__) unless block_given?
 
       @table.each do |row|
-        yield row.at(@index)
+        yield(row[@index])
       end
+
+      self
     end
 
     # @param [Hash] options
