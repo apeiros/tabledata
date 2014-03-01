@@ -260,6 +260,29 @@ module TableData
       @rows[row]
     end
 
+    # @return [Object]
+    #   The cell value at the given row and column number (zero based). Includes headers and footer.
+    #   Returns the given default value or invokes the default block if the desired cell does not
+    #   exist.
+    #
+    # @raise [KeyError]
+    #   If the cell was not found and neither a default value nor a default block were given.
+    def fetch_cell(row, column, *default)
+      raise ArgumentError, "Must only provide at max one default value or one default block" if default.size > (block_given? ? 0 : 1)
+
+      row_data = row(row)
+
+      if row_data
+        row_data.fetch(column)
+      elsif block_given?
+        yield(self, row, column)
+      elsif default.empty?
+        raise KeyError, "Cell not found: #{row.inspect}, #{column.inspect}"
+      else
+        default.first
+      end
+    end
+
     # @return [Symbol, nil]
     #   The accessor defined for the given column index.
     def column_accessor(index)
