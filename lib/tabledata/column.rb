@@ -45,12 +45,12 @@ module TableData
     #
     # @return [Array, Object]
     def [](*args)
-      rows = @table.rows[*args]
+      rows = @table.body[*args]
 
       if rows.is_a?(Array) # slice
-        rows.map { |row| row.at(@index) }
+        rows.map { |row| row[@index] }
       else # single row
-        rows.at(@index)
+        rows[@index]
       end
     end
 
