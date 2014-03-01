@@ -73,6 +73,25 @@ module TableData
       self
     end
 
+    # Iterate over all values in the column, including header and footer.
+    #
+    # @see TableData::Table#each
+    #   A method which iterates only over body values, excluding header and footer.
+    #
+    # @yield [value]
+    # @yieldparam [Object]
+    #
+    # @return [self]
+    def each_value
+      return enum_for(__method__) unless block_given?
+
+      @table.data.each do |row|
+        yield(row[@index])
+      end
+
+      self
+    end
+
     # @param [Hash] options
     # @option options [Symbol] :include_header
     #   Defaults to true. If set to false, the header (if present) is excluded.
