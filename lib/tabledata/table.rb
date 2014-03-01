@@ -237,20 +237,26 @@ module TableData
       body[*args]
     end
 
-    # Access the value of a cell directly
+    # @return [TableData::Row]
+    #   The row at the given row number (zero based). Includes headers and footer.
+    #   Returns the given default value or invokes the default block if the desired row does not
+    #   exist.
     #
-    # @note This method's signature will probably change soon.
-    #
-    # TODO: Figure out how to properly deal with out-of-bounds access.
-    def cell(row, column, default=nil)
+    # @raise [KeyError]
+    #   If the row was not found and neither a default value nor a default block were given.
+    def fetch_row(row, *default)
+      raise ArgumentError, "Must only provide at max one default value or one default block" if default.size > (block_given? ? 0 : 1)
+
       row_data = row(row)
 
       if row_data
-        row_data.at(column)
+        row_data
       elsif block_given?
-        yield(self, row, column)
+        yield(self, row)
+      elsif default.empty?
+        raise KeyError, "Row not found: #{row.inspect}"
       else
-        default
+        default.first
       end
     end
 
