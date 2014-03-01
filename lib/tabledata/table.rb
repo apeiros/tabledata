@@ -478,14 +478,28 @@ module TableData
     #   Uses the #data method to get the contents.
     #   If other has no #data method, the comparison is false.
     def ==(other)
+      @data == other.data
+    rescue NoMethodError
+      false
+    end
+
+    # @return [true, false]
+    #   Whether this table has the same content and properties (name, has_headers, has_footer,
+    #   accessors) as another table
+    def eql?(other)
       (
         other.is_a?(TableData::Table) &&
         other.name      == @name &&
         other.headers?  == @has_headers &&
         other.footer?   == @has_footer &&
         other.accessors == @accessors &&
-        other.data      == data
+        other.data      == @data
       )
+    end
+
+    # See Object#hash
+    def hash(other)
+      [TableData::Table, @name, @has_headers, @has_footer, @accessors, @data].hash
     end
 
     # @return [TableData::Presenter]
