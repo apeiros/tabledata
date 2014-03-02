@@ -8,6 +8,10 @@
 require 'tabledata/exceptions'
 
 module TableData
+
+  # This module provides methods to detect the encoding of a text file.
+  # Currently the detection is limited to utf-8, windows-1252 and macroman in
+  # western european languages.
   module Detection
     UnlikelyCharsWin1252    = "\xA0\xA1\xA2\xA3\xA4\xA5\xA6\xA7\xA8\xA9\xAA\xAB\xAC\xAD" \
                               "\xAE\xAF\xB0\xB1\xB2\xB3\xB4\xB5\xB6\xB7\xB8\xB9\xBA\xBB" \
