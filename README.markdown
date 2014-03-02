@@ -20,7 +20,12 @@ Installation
 Usage
 -----
 
-    table = TableData.table_from_file(path)
+    table1 = TableData.table file: 'some/excelfile.xls'
+    table2 = TableData.table header: %w[header1 header2], body: [['value1', 'value2']]
+    table3 = TableData.table data: [['header1', 'header2'], ['value1', 'value2']], accessors: [:cell1, :cell2]
+    table3.fetch_cell(1, :cell1) # => 'value1'
+    table3.row(1).cell1          # => 'value1'
+    table3[0][0]                 # => 'value1'
 
 
 
