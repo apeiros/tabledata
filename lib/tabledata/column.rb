@@ -125,7 +125,7 @@ module TableData
     #   False if other is neither a Tabledata::Column, Array, or Object
     #   responding to #to_ary.
     def ==(other)
-      if other.is_a?(Tabledata::Column)
+      if other.is_a?(TableData::Column)
         other.to_a == @table.data.transpose[@index]
       elsif other.is_a?(Array)
         other == @table.data.transpose[@index]
