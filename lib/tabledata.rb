@@ -15,6 +15,24 @@ require 'tabledata/exceptions'
 module TableData
   module_function
 
+  # @see TableData::Table.new Full documentation
+  # @see TableData::Table.from_file Full documentation
+  #
+  # If a :file option is present, it uses #{TableData::Table.from_file},
+  # otherwise #{TableData::Table.new}.
+  #
+  # @return [TableData::Table]
+  def table(options)
+    if options.has_key?(:file)
+      options = options.dup
+      path   = options.delete(:file)
+
+      Table.from_file(path, options)
+    else
+      Table.new(options)
+    end
+  end
+
   # @see TableData::Table.from_file Full documentation
   #
   # @return [TableData::Table]
