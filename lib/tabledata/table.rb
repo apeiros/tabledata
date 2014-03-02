@@ -15,18 +15,18 @@ module TableData
 
     include Enumerable
 
-    ValidOptions = [:has_headers, :has_footer, :file_type, :name, :table_class, :accessors, :data, :header, :body, :footer]
+    # A list of options which are valid to be passed to some of the constructors.
+    ValidOptions           = [:has_headers, :has_footer, :file_type, :name, :table_class, :accessors, :data, :header, :body, :footer]
 
-    # The default options for TableData::Table#initialize
-    # Must be a method because the values should be new objects each time
-    def self.default_options
-      {
-        has_headers: true,
-        has_footer: false, # currently unused
-        accessors:  [],
-        name:       'Unnamed Table',
-      }
-    end
+    # Options which are invalid to be passed to TableData::Table.from_file.
+    InvalidFromFileOptions = [:data, :header, :body, :footer]
+
+    # The default name for unnamed tables.
+    DefaultTableName       = 'Unnamed Table'
+
+    # The default accessor list.
+    DefaultAccessors       = []
+
 
     # Create a table from a file.  
     # See {TableData} docs for a list of supported file types.
@@ -146,7 +146,7 @@ module TableData
     #   Whether the table has a footer, defaults to false
     #
     def initialize(options=nil)
-      options           = options ? self.class.default_options.merge(options) : self.class.default_options
+      options           = options ? options.dup : {}
       raise ArgumentError, "Invalid options: #{(options.keys-ValidOptions).inspect[1..-2]}" unless (options.keys-ValidOptions).empty?
 
       if options.has_key?(:data)
@@ -157,6 +157,8 @@ module TableData
         if options.has_key?(:header)
           data << options.delete(:header)
           options[:has_headers] = true
+        elsif !options.has_key?(:has_headers)
+          options[:has_headers] = false
         end
         data.concat(options.delete(:body)) if options.has_key?(:body)
         if options.has_key?(:footer)
@@ -166,9 +168,9 @@ module TableData
       end
 
       column_count      = data.first ? data.first.size : 0
-      @name             = options.delete(:name)
-      @has_headers      = options.delete(:has_headers) ? true : false
-      @has_footer       = options.delete(:has_footer) ? true : false
+      @name             = options.delete(:name) || DefaultTableName
+      @has_headers      = options.fetch(:has_headers, true) ? true : false
+      @has_footer       = options.fetch(:has_footer, false) ? true : false
       @data             = data
       @header_columns   = nil                        # used for cell access by header name, e.g. table[0]["Some Cellname"]
       self.accessors    = options.delete(:accessors) # used for cell access by accessor, e.g. table[0][:some_cell_accessor]
