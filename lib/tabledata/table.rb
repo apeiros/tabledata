@@ -290,7 +290,7 @@ module TableData
       elsif block_given?
         yield(self, row, column)
       elsif default_value.empty?
-        raise KeyError, "Cell not found: #{row.inspect}, #{column.inspect}"
+        raise IndexError, "Row not found: #{row.inspect}, #{column.inspect}"
       else
         default_value.first
       end
