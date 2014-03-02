@@ -17,7 +17,7 @@ module TableData
     include Exception
 
     def initialize(row_num, expected, actual)
-      super("Invalid column count in row #{row_num} (#{expected} expected, but has #{actual})"
+      super("Invalid column count in row #{row_num} (#{expected} expected, but has #{actual})")
     end
   end
   class InvalidColumnName < InvalidColumnSpecifier; end
