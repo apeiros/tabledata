@@ -7,5 +7,7 @@ rescue LoadError
 end
 
 module TableData
+
+  # The version of the tabledata gem.
   Version = Gem::Version.new("0.0.3")
 end
