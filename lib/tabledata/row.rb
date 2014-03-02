@@ -173,7 +173,17 @@ module TableData
     #     row.values_at(:foo,'z') # => [:a, :c]
     #     row.values_at(0..1, 2..-1) # => [:a, :b, :c]
     def values_at(*columns)
-      columns.map { |column| at(column) }
+      result = []
+      columns.each do |column|
+        data = at(column)
+        if column.is_a?(Range)
+          result.concat(data) if data
+        else
+          result << data
+        end
+      end
+
+      result
     end
 
     # @return [Integer] The number of cells in this row.
