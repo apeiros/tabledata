@@ -280,19 +280,19 @@ module TableData
     #
     # @raise [KeyError]
     #   If the cell was not found and neither a default value nor a default block were given.
-    def fetch_cell(row, column, *default)
-      raise ArgumentError, "Must only provide at max one default value or one default block" if default.size > (block_given? ? 0 : 1)
+    def fetch_cell(row, column, *default_value, &default_block)
+      raise ArgumentError, "Must only provide at max one default value or one default block" if default_value.size > (block_given? ? 0 : 1)
 
       row_data = row(row)
 
       if row_data
-        row_data.fetch(column)
+        row_data.fetch(column, *default_value, &default_block)
       elsif block_given?
         yield(self, row, column)
-      elsif default.empty?
+      elsif default_value.empty?
         raise KeyError, "Cell not found: #{row.inspect}, #{column.inspect}"
       else
-        default.first
+        default_value.first
       end
     end
 
