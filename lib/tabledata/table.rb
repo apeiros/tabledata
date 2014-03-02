@@ -56,6 +56,11 @@ module TableData
     #
     def self.from_file(path, options=nil)
       options ||= {}
+
+      unless (options.keys & InvalidFromFileOptions).empty?
+        raise ArgumentError, "Must not pass #{(options.keys & InvalidFromFileOptions).inspect[1..-2]}"
+      end
+
       options[:table_class] ||= self
       options[:file_type]   ||= Detection.file_type_from_path(path)
       options[:name]        ||= File.basename(path).sub(/\.(?:csv|xlsx?)\z/, '')
