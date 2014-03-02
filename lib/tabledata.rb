@@ -61,6 +61,7 @@ module TableData
     Tables.from_data(*args)
   end
 
+  # @private
   # A helper method to require optional dependencies and provide better informing
   # errors if such a dependency should be missing.
   # Also silences $stdout during the require.
