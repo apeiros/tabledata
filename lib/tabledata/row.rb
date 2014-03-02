@@ -208,7 +208,11 @@ module TableData
     # @private
     # See Object#respond_to_missing?
     def respond_to_missing?(name, include_private)
-      @table.index_for_accessor(name) ? true : false
+      if name =~ /=$/
+        @table.index_for_accessor(name[0..-2].to_sym) ? true : false
+      else
+        @table.index_for_accessor(name) ? true : false
+      end
     end
 
     # Allow reading and writing cell values by their accessor name.
