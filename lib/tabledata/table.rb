@@ -163,7 +163,7 @@ module TableData
           data << options.delete(:header)
           options[:has_headers] = true
         elsif !options.has_key?(:has_headers)
-          options[:has_headers] = false
+          options[:has_headers] = !options.has_key?(:body)
         end
         data.concat(options.delete(:body)) if options.has_key?(:body)
         if options.has_key?(:footer)
