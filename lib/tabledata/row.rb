@@ -118,9 +118,10 @@ module TableData
     #     row.at("x")  # => :a
     def at(column)
       case column
-        when Symbol then at_accessor(column)
-        when String then at_header(column)
+        when Symbol  then at_accessor(column)
+        when String  then at_header(column)
         when Integer then at_index(column)
+        when Range   then @data[column]
         else raise InvalidColumnSpecifier, "Invalid index type, expected Symbol, String or Integer, but got #{column.class}"
       end
     end
