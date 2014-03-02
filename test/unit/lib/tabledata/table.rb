@@ -38,6 +38,7 @@ suite "TableData::Table" do
     table2 = TableData::Table.new data: data, has_headers: false, has_footer: true, accessors: [:a, :b, :c], name: 'testtable'
     table3 = TableData::Table.new data: data, has_headers: true, has_footer: false, accessors: [:a, :b, :c], name: 'testtable'
     table4 = TableData::Table.new header: header, body: body, footer: footer
+    table5 = TableData::Table.new body: body
 
     assert_kind_of TableData::Table, table1
     assert_kind_of TableData::Table, table2
@@ -78,6 +79,15 @@ suite "TableData::Table" do
     assert_equal body,            table4.body.map(&:to_a)
     assert_equal footer,          table4.footer.to_a
     assert_equal data,            table4.to_a
+
+    assert_equal 'Unnamed Table', table5.name
+    assert_equal false,           table5.headers?
+    assert_equal false,           table5.footer?
+    assert_equal [],              table5.accessors
+    assert_equal nil,             table5.headers
+    assert_equal body,            table5.body.map(&:to_a)
+    assert_equal nil,             table5.footer
+    assert_equal body,            table5.to_a
   end
 
   test 'Table#accessors' do
@@ -201,8 +211,10 @@ suite "TableData::Table" do
   test 'Table#cell' do
     table = TableData.table_from_data([%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
 
-    assert_equal 'H1', table.cell(0, 0)
-    assert_equal :b,   table.cell(1, 1)
+    assert_equal 'H1', table.fetch_cell(0, 0)
+    assert_equal :b,   table.fetch_cell(1, 1)
+    assert_raise IndexError do table.fetch_cell(2, 0) end
+    assert_raise IndexError do table.fetch_cell(0, 3) end
 
     # TODO: I'm not sure how Table#cell should work with regards to out-of-bounds access
   end
