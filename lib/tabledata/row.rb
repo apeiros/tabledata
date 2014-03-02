@@ -48,6 +48,26 @@ module TableData
       @data.each(&block)
     end
 
+    # Tries to return the value of the column identified by index, corresponding accessor or header.
+    # It throws an IndexError exception if the referenced index lies outside of the array bounds.
+    # This error can be prevented by supplying a second argument, which will act as a default value.
+    # 
+    # Alternatively, if a block is given it will only be executed when an invalid
+    # index is referenced.  Negative values of index count from the end of the
+    # array.
+    def fetch(column, *default_value, &default_block)
+      raise ArgumentError, "Must only provide at max one default value or one default block" if default_value.size > (block_given? ? 0 : 1)
+
+      index = case column
+        when Symbol then @table.index_for_accessor(column)
+        when String then @table.index_for_header(column)
+        when Integer then column
+        else raise InvalidColumnSpecifier, "Invalid index type, expected Symbol, String or Integer, but got #{column.class}"
+      end
+
+      @data.fetch(index, *default_value, &default_block)
+    end
+
     # Convenience access of values in the row.
     # Can either be used like Array#[], i.e. it accepts an offset,
     # an offset + length, or an offset-to-offset range.
