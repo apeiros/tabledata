@@ -311,6 +311,7 @@ module TableData
 
       h && h.at(index)
     end
+    alias column_header column_name
 
     # @return [Array<TableData::Column>]
     #   An array with the columns of this table
