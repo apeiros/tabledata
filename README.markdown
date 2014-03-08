@@ -13,7 +13,7 @@ Read tabular data from various formats, like Excel .xls, Excel .xlsx, CSV.
 Installation
 ------------
 
-`gem install tables`
+`gem install tabledata`
 
 
 
