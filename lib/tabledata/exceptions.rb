@@ -8,7 +8,7 @@ module TableData
   end
 
   class InvalidOptions < ArgumentError
-    include Exception
+    include TableData::Exception
 
     def self.verify!(method_name, options, valid_keys)
       invalid_keys = options.keys-valid_keys
@@ -20,22 +20,20 @@ module TableData
     end
   end
   class InvalidFileType < ArgumentError
-    include Exception
+    include TableData::Exception
   end
   class InvalidColumnCount < ArgumentError
-    include Exception
+    include TableData::Exception
 
     def initialize(row_num, expected, actual)
       super("Invalid column count in row #{row_num} (#{expected} expected, but has #{actual})")
     end
   end
-  class InvalidColumnSpecifier < ArgumentError
-    include Exception
-  end
+  class InvalidColumnSpecifier < ArgumentError; include TableData::Exception; end
   class InvalidColumnName < InvalidColumnSpecifier; end
   class InvalidColumnAccessor < InvalidColumnSpecifier; end
   class LibraryMissingError < LoadError
-    include Exception
+    include TableData::Exception
 
     attr_reader :name, :cause
 
