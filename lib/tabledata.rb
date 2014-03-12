@@ -1,28 +1,28 @@
 # encoding: utf-8
 
 require 'stringio'
-require 'table_data/version'
-require 'table_data/table'
-require 'table_data/tables'
-require 'table_data/dsls/table_definition'
-require 'table_data/exceptions'
+require 'tabledata/version'
+require 'tabledata/table'
+require 'tabledata/tables'
+require 'tabledata/dsls/table_definition'
+require 'tabledata/exceptions'
 
 # Handle tabular data
 #
-# TableData supports the following file formats:
+# Tabledata supports the following file formats:
 # * .xls Excel files (:xls)
 # * .xlsx Excel files (:xlsx)
 # * .csv Comma Separated Values (:csv)
-module TableData
+module Tabledata
   module_function
 
-  # @see TableData::Table#initialize Full documentation
-  # @see TableData::Table.from_file Full documentation
+  # @see Tabledata::Table#initialize Full documentation
+  # @see Tabledata::Table.from_file Full documentation
   #
-  # If a :file option is present, it uses #{TableData::Table.from_file},
-  # otherwise #{TableData::Table.new}.
+  # If a :file option is present, it uses #{Tabledata::Table.from_file},
+  # otherwise #{Tabledata::Table.new}.
   #
-  # @return [TableData::Table]
+  # @return [Tabledata::Table]
   def table(options)
     if options.has_key?(:file)
       options = options.dup
@@ -34,13 +34,13 @@ module TableData
     end
   end
 
-  # @see TableData::Tables#initialize Full documentation
-  # @see TableData::Tables.from_file Full documentation
+  # @see Tabledata::Tables#initialize Full documentation
+  # @see Tabledata::Tables.from_file Full documentation
   #
-  # If a :file option is present, it uses #{TableData::Table.from_file},
-  # otherwise #{TableData::Tables.new}.
+  # If a :file option is present, it uses #{Tabledata::Table.from_file},
+  # otherwise #{Tabledata::Tables.new}.
   #
-  # @return [TableData::Tables]
+  # @return [Tabledata::Tables]
   def tables(options)
     if options.has_key?(:file)
       options = options.dup

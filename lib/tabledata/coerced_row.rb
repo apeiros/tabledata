@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-require 'table_data/row'
+require 'tabledata/row'
 
-module TableData
+module Tabledata
   class CoercedRow < Row
 
     attr_reader :column_errors

@@ -1,2 +1,2 @@
-suite "TableData::Tables" do
+suite "Tabledata::Tables" do
 end

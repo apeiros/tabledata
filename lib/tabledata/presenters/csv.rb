@@ -1,11 +1,11 @@
 # encoding: utf-8
 
-require 'table_data/presenter'
+require 'tabledata/presenter'
 require 'csv'
 
-module TableData
+module Tabledata
   module Presenters
-    class CSV < TableData::Presenter
+    class CSV < Tabledata::Presenter
       OptionMapping = {
         column_separator: :col_sep,
         row_separator:    :row_sep,

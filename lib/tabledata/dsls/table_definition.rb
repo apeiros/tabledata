@@ -1,10 +1,10 @@
 # encoding: utf-8
 
-require 'table_data/column_definition'
-require 'table_data/table_definition'
-require 'table_data/custom_table'
+require 'tabledata/column_definition'
+require 'tabledata/table_definition'
+require 'tabledata/custom_table'
 
-module TableData
+module Tabledata
   module Dsls
     class TableDefinition
       attr_reader :identifier
@@ -22,7 +22,7 @@ module TableData
       end
 
       def definition
-        TableData::TableDefinition.new(@identifier, @columns)
+        Tabledata::TableDefinition.new(@identifier, @columns)
       end
 
       def column_defaults(value)

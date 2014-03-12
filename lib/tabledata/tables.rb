@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-require 'table_data/table'
+require 'tabledata/table'
 
-module TableData
+module Tabledata
 
   # This class represents a list of named tables.
   class Tables
@@ -19,7 +19,7 @@ module TableData
 
     def self.from_file(path, options=nil)
       options ||= {}
-      options[:table_class] ||= TableData::Table
+      options[:table_class] ||= Tabledata::Table
       options[:file_type]   ||= Detection.file_type_from_path(path)
       options[:name]        ||= File.basename(path).sub(/\.(?:csv|xlsx?)\z/, '')
 

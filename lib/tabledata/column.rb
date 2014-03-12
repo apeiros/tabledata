@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module TableData
+module Tabledata
 
   # Represents a column in a table and provides an easy way to enumerate
   # values in a column.
@@ -56,7 +56,7 @@ module TableData
 
     # Iterate over all body values (i.e. no header or footer) in the column.
     #
-    # @see TableData::Column#each_value
+    # @see Tabledata::Column#each_value
     #   A method which iterates over all values, including header and footer.
     #
     # @yield [value]
@@ -75,7 +75,7 @@ module TableData
 
     # Iterate over all values in the column, including header and footer.
     #
-    # @see TableData::Table#each
+    # @see Tabledata::Table#each
     #   A method which iterates only over body values, excluding header and footer.
     #
     # @yield [value]
@@ -125,7 +125,7 @@ module TableData
     #   False if other is neither a Tabledata::Column, Array, or Object
     #   responding to #to_ary.
     def ==(other)
-      if other.is_a?(TableData::Column)
+      if other.is_a?(Tabledata::Column)
         other.to_a == @table.data.transpose[@index]
       elsif other.is_a?(Array)
         other == @table.data.transpose[@index]
@@ -140,12 +140,12 @@ module TableData
     #
     # @return [true, false] Whether `other` is also a column and contains the same data.
     def eql?(other)
-      other.is_a?(TableData::Column) && @table.data.transpose[@index] == other.to_a
+      other.is_a?(Tabledata::Column) && @table.data.transpose[@index] == other.to_a
     end
 
     # See Object#hash
     def hash
-      [TableData::Column, to_a].hash
+      [Tabledata::Column, to_a].hash
     end
   end
 end

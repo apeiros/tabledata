@@ -1,12 +1,12 @@
 # encoding: utf-8
 
-require 'table_data/presenter'
-TableData.require_library 'prawn', "To generate PDF files, the gem 'prawn' must be installed."
+require 'tabledata/presenter'
+Tabledata.require_library 'prawn', "To generate PDF files, the gem 'prawn' must be installed."
 
 
-module TableData
+module Tabledata
   module Presenters
-    class PDF < TableData::Presenter
+    class PDF < Tabledata::Presenter
 
       def document
         pdf = Prawn::Document.new

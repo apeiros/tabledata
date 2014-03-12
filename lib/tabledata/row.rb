@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-require 'table_data/exceptions'
+require 'tabledata/exceptions'
 
-module TableData
+module Tabledata
 
   # Represents a row in a table and provides an easy way to enumerate and access
   # values in a row.
@@ -10,7 +10,7 @@ module TableData
   # If your table defines accessors, you can access columns by using methods of that name.
   #
   # @example
-  #     table = TableData.table body: [[1,2,3], [4,5,6]], accessors: %i[foo bar baz]
+  #     table = Tabledata.table body: [[1,2,3], [4,5,6]], accessors: %i[foo bar baz]
   #     table[0].foo     # => 1
   #     table[1].baz     # => 6
   #     table[1].bar = 9
@@ -92,7 +92,7 @@ module TableData
     # Array-like access to row-data.
     #
     # @example
-    #     table = TableData.table body: [[:a,:b,:c]], accessors: %i[foo bar baz]
+    #     table = Tabledata.table body: [[:a,:b,:c]], accessors: %i[foo bar baz]
     #     row   = table.row(0)
     #     row.slice(1)      # => :b
     #     row.slice(0, 2)   # => [:a, :b]
@@ -111,7 +111,7 @@ module TableData
     # Access a single cell by either index, index-range, accessor or header-name.
     #
     # @example
-    #     table = TableData.table header: %w[x y z], body: [[:a,:b,:c]], accessors: %i[foo bar baz]
+    #     table = Tabledata.table header: %w[x y z], body: [[:a,:b,:c]], accessors: %i[foo bar baz]
     #     row   = table.row(1)
     #     row.at(0)    # => :a
     #     row.at(:foo) # => :a
@@ -127,10 +127,10 @@ module TableData
     end
 
     # Access a single cell by its corresponding header-name.
-    # This method is faster than the generic methods TableData::Row#[] and #at.
+    # This method is faster than the generic methods Tabledata::Row#[] and #at.
     #
     # @example
-    #     table = TableData.table header: %w[x y z], body: [[:a,:b,:c]], accessors: %i[foo bar baz]
+    #     table = Tabledata.table header: %w[x y z], body: [[:a,:b,:c]], accessors: %i[foo bar baz]
     #     row   = table.row(1)
     #     row.at_header("x")  # => :a
     def at_header(name)
@@ -141,10 +141,10 @@ module TableData
     end
 
     # Access a single cell by its corresponding accessor.
-    # This method is faster than the generic methods TableData::Row#[] and #at.
+    # This method is faster than the generic methods Tabledata::Row#[] and #at.
     #
     # @example
-    #     table = TableData.table header: %w[x y z], body: [[:a,:b,:c]], accessors: %i[foo bar baz]
+    #     table = Tabledata.table header: %w[x y z], body: [[:a,:b,:c]], accessors: %i[foo bar baz]
     #     row   = table.row(1)
     #     row.at_accessor(:foo) # => :a
     def at_accessor(name)
@@ -155,10 +155,10 @@ module TableData
     end
 
     # Access a single cell by its index.
-    # This method is faster than the generic methods TableData::Row#[] and #at.
+    # This method is faster than the generic methods Tabledata::Row#[] and #at.
     #
     # @example
-    #     table = TableData.table header: %w[x y z], body: [[:a,:b,:c]], accessors: %i[foo bar baz]
+    #     table = Tabledata.table header: %w[x y z], body: [[:a,:b,:c]], accessors: %i[foo bar baz]
     #     row   = table.row(1)
     #     row.at_index(0)    # => :a
     def at_index(index)
@@ -167,7 +167,7 @@ module TableData
 
     # Access multiple values by either index, index-range, accessor or header-name.
     # @example
-    #     table = TableData.table header: %w[x y z], body: [[:a,:b,:c]], accessors: %i[foo bar baz]
+    #     table = Tabledata.table header: %w[x y z], body: [[:a,:b,:c]], accessors: %i[foo bar baz]
     #     row   = table.row(1)
     #     row.values_at(2,1,0)    # => [:c, :b, :a]
     #     row.values_at(:foo,'z') # => [:a, :c]

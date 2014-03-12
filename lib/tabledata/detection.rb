@@ -5,9 +5,9 @@
 # Encoding::UTF_8
 # Encoding::ISO8859_15
 
-require 'table_data/exceptions'
+require 'tabledata/exceptions'
 
-module TableData
+module Tabledata
 
   # This module provides methods to detect the encoding of a text file.
   # Currently the detection is limited to utf-8, windows-1252 and macroman in

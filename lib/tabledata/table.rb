@@ -1,13 +1,13 @@
 # encoding: utf-8
 
-require 'table_data/parser'
-require 'table_data/row'
-require 'table_data/column'
-require 'table_data/detection'
-require 'table_data/exceptions'
-require 'table_data/presenter'
+require 'tabledata/parser'
+require 'tabledata/row'
+require 'tabledata/column'
+require 'tabledata/detection'
+require 'tabledata/exceptions'
+require 'tabledata/presenter'
 
-module TableData
+module Tabledata
 
   # Table represents tabular data and provides various ways to create one,
   # read from it and represent it in a different format.
@@ -18,7 +18,7 @@ module TableData
     # A list of options which are valid to be passed to some of the constructors.
     ValidOptions           = [:has_headers, :has_footer, :file_type, :name, :table_class, :accessors, :data, :header, :body, :footer]
 
-    # Options which are invalid to be passed to TableData::Table.from_file.
+    # Options which are invalid to be passed to Tabledata::Table.from_file.
     InvalidFromFileOptions = [:data, :header, :body, :footer]
 
     # The default name for unnamed tables.
@@ -29,7 +29,7 @@ module TableData
 
 
     # Create a table from a file.  
-    # See {TableData} docs for a list of supported file types.
+    # See {Tabledata} docs for a list of supported file types.
     #
     # @param [String] path
     #   The path to a file in one of the supported formats.
@@ -52,7 +52,7 @@ module TableData
     # @option options [true, false] :has_footer
     #   Whether the table has a footer, defaults to false
     #
-    # @return [TableData::Table]
+    # @return [Tabledata::Table]
     #
     def self.from_file(path, options=nil)
       options ||= {}
@@ -88,7 +88,7 @@ module TableData
     #   The file type. Nil for auto-detection (which uses the extension of the
     #   filename), or one of :csv, :xls or :xlsx
     # @option options [Symbol] :table_class
-    #   The class to use for this table. Defaults to self (TableData::Table)
+    #   The class to use for this table. Defaults to self (Tabledata::Table)
     # @option options [String] :name
     #   The name of the table
     # @option options [Array<Symbol>, Hash<Symbol => Integer>, nil] :accessors
@@ -201,7 +201,7 @@ module TableData
 
     # @param [Array<Symbol>, Hash<Symbol => Integer>, nil] accessors
     #
-    # Define the name of the accessors used in TableData::Row.
+    # Define the name of the accessors used in Tabledata::Row.
     # If you pass in a Hash, it's supposed to be in the form of
     # {accessor_name: column_index}.
     def accessors=(accessors)
@@ -239,12 +239,12 @@ module TableData
     # Array#[] like access to the rows in the body (excluding headers and
     # footer) of the table.
     #
-    # @return [Array<TableData::Row>]
+    # @return [Array<Tabledata::Row>]
     def [](*args)
       body[*args]
     end
 
-    # @return [TableData::Row]
+    # @return [Tabledata::Row]
     #   The row at the given row number (zero based). Includes headers and footer.
     #   Returns the given default value or invokes the default block if the desired row does not
     #   exist.
@@ -267,7 +267,7 @@ module TableData
       end
     end
 
-    # @return [TableData::Row]
+    # @return [Tabledata::Row]
     #   The row at the given row number (zero based). Includes headers and footer.
     def row(row)
       @rows[row]
@@ -313,13 +313,13 @@ module TableData
     end
     alias column_header column_name
 
-    # @return [Array<TableData::Column>]
+    # @return [Array<Tabledata::Column>]
     #   An array with the columns of this table
     def columns
       Array.new(column_count) { |col| column(col) }
     end
 
-    # @return [TableData::Column]
+    # @return [Tabledata::Column]
     #   The column at the given index, accessor or name.
     def column(index)
       Column.new(self, index_for_column(index))
@@ -365,7 +365,7 @@ module TableData
       @has_headers
     end
 
-    # @return [TableData::Row, nil]
+    # @return [Tabledata::Row, nil]
     #   The header row, if the table has headers and the header row is present.
     #   Nil otherwise.
     def headers
@@ -378,14 +378,14 @@ module TableData
       @has_footer
     end
 
-    # @return [TableData::Row, nil]
+    # @return [Tabledata::Row, nil]
     #   The header row, if the table has a footer and the footer row is present.
     #   Nil otherwise.
     def footer
       !footer? || (headers? && @rows.size < 2) ? nil : @rows.last
     end
 
-    # @return [Array<TableData::Row>]
+    # @return [Array<Tabledata::Row>]
     #   All rows except header and footer.
     def body
       end_offset = footer? ? -2 : -1
@@ -421,10 +421,10 @@ module TableData
 
     # Iterate over all rows in the body
     #
-    # @see TableData::Table#each_row A method which iterates over all rows, including headers
+    # @see Tabledata::Table#each_row A method which iterates over all rows, including headers
     #
     # @yield [row]
-    # @yieldparam [TableData::Row]
+    # @yieldparam [Tabledata::Row]
     #
     # @return [self]
     def each(&block)
@@ -437,10 +437,10 @@ module TableData
 
     # Iterate over all rows, header and body
     #
-    # @see TableData::Table#each A method which iterates only over body-rows
+    # @see Tabledata::Table#each A method which iterates only over body-rows
     #
     # @yield [row]
-    # @yieldparam [TableData::Row]
+    # @yieldparam [Tabledata::Row]
     #
     # @return [self]
     def each_row(&block)
@@ -454,7 +454,7 @@ module TableData
     # Iterate over all columns
     #
     # @yield [column]
-    # @yieldparam [TableData::Column]
+    # @yieldparam [Tabledata::Column]
     #
     # @return [self]
     def each_column
@@ -496,7 +496,7 @@ module TableData
     #   accessors) as another table
     def eql?(other)
       (
-        other.is_a?(TableData::Table) &&
+        other.is_a?(Tabledata::Table) &&
         other.name      == @name &&
         other.headers?  == @has_headers &&
         other.footer?   == @has_footer &&
@@ -507,10 +507,10 @@ module TableData
 
     # See Object#hash
     def hash(other)
-      [TableData::Table, @name, @has_headers, @has_footer, @accessors, @data].hash
+      [Tabledata::Table, @name, @has_headers, @has_footer, @accessors, @data].hash
     end
 
-    # @return [TableData::Presenter]
+    # @return [Tabledata::Presenter]
     def format(format_id, options=nil)
       Presenter.present(self, format_id, options)
     end

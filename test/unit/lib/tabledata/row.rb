@@ -1,4 +1,4 @@
-suite "TableData::Row" do
+suite "Tabledata::Row" do
     test 'Row#table' do
     end
 

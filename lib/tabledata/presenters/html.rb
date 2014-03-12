@@ -1,11 +1,11 @@
 # encoding: utf-8
 
-require 'table_data/presenter'
+require 'tabledata/presenter'
 require 'cgi'
 
-module TableData
+module Tabledata
   module Presenters
-    class HTML < TableData::Presenter
+    class HTML < Tabledata::Presenter
       def html_head
         <<-EOHTML
 <!DOCTYPE html>

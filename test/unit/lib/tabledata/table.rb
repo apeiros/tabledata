@@ -1,10 +1,10 @@
-suite "TableData::Table" do
+suite "Tabledata::Table" do
   test 'Table::from_data' do
-    assert_kind_of TableData::Table, TableData::Table.from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
-    assert_kind_of TableData::Table, TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
+    assert_kind_of Tabledata::Table, Tabledata::Table.from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
+    assert_kind_of Tabledata::Table, Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
 
-    table1 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
-    table2 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false)
+    table1 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
+    table2 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false)
 
     assert table1.headers?
     assert !table2.headers?
@@ -15,15 +15,15 @@ suite "TableData::Table" do
   end
 
   test 'Table::from_file' do
-    assert_kind_of TableData::Table, TableData::Table.from_file(test_file('test1.xls'))
-    assert_kind_of TableData::Table, TableData.table_from_file(test_file('test1.xls'))
+    assert_kind_of Tabledata::Table, Tabledata::Table.from_file(test_file('test1.xls'))
+    assert_kind_of Tabledata::Table, Tabledata.table_from_file(test_file('test1.xls'))
 
     expected = [
       ["First Name", "Last Name", "Age", "Birthday",            "Profession",   "Street",             "Street Name",    "Street Number", "ZIP",   "City",     "E-Mail"],
       ["Peter",      "Parker",    30.0,  Date.civil(1973,1,31), "Photographer", "410 Chelsea Street", "Chelsea Street", 410.0,           10307.0, "New York", "peter.parker@example.com"],
     ]
-    table1 = TableData.table_from_file(test_file('test1.xls'))
-    table2 = TableData.table_from_file(test_file('test1.xlsx'))
+    table1 = Tabledata.table_from_file(test_file('test1.xls'))
+    table2 = Tabledata.table_from_file(test_file('test1.xlsx'))
 
     assert_equal expected, table1.to_a
     assert_equal expected, table2.to_a
@@ -34,15 +34,15 @@ suite "TableData::Table" do
     body   = [[1,2,3]]
     footer = [:a, :b, :c]
     data   = [header]+body+[footer]
-    table1 = TableData::Table.new
-    table2 = TableData::Table.new data: data, has_headers: false, has_footer: true, accessors: [:a, :b, :c], name: 'testtable'
-    table3 = TableData::Table.new data: data, has_headers: true, has_footer: false, accessors: [:a, :b, :c], name: 'testtable'
-    table4 = TableData::Table.new header: header, body: body, footer: footer
-    table5 = TableData::Table.new body: body
+    table1 = Tabledata::Table.new
+    table2 = Tabledata::Table.new data: data, has_headers: false, has_footer: true, accessors: [:a, :b, :c], name: 'testtable'
+    table3 = Tabledata::Table.new data: data, has_headers: true, has_footer: false, accessors: [:a, :b, :c], name: 'testtable'
+    table4 = Tabledata::Table.new header: header, body: body, footer: footer
+    table5 = Tabledata::Table.new body: body
 
-    assert_kind_of TableData::Table, table1
-    assert_kind_of TableData::Table, table2
-    assert_kind_of TableData::Table, table3
+    assert_kind_of Tabledata::Table, table1
+    assert_kind_of Tabledata::Table, table2
+    assert_kind_of Tabledata::Table, table3
 
     assert_equal 'Unnamed Table', table1.name
     assert_equal true,            table1.headers?
@@ -95,11 +95,11 @@ suite "TableData::Table" do
     accessors3 = [:a, :b, :c]
     accessors4 = [:a, nil, :c]
     accessors5 = [nil, nil, nil]
-    table1     = TableData::Table.new
-    table2     = TableData::Table.new(accessors: nil)
-    table3     = TableData::Table.new(accessors: accessors3)
-    table4     = TableData::Table.new(accessors: accessors4)
-    table5     = TableData::Table.new(accessors: accessors5)
+    table1     = Tabledata::Table.new
+    table2     = Tabledata::Table.new(accessors: nil)
+    table3     = Tabledata::Table.new(accessors: accessors3)
+    table4     = Tabledata::Table.new(accessors: accessors4)
+    table5     = Tabledata::Table.new(accessors: accessors5)
 
     assert_equal [],         table1.accessors
     assert_equal accessors2, table2.accessors
@@ -113,11 +113,11 @@ suite "TableData::Table" do
     accessors3       = [:a, :b, :c]
     accessors4       = [:a, nil, :c]
     accessors5 = [nil, nil, nil]
-    table1           = TableData::Table.new
-    table2           = TableData::Table.new
-    table3           = TableData::Table.new
-    table4           = TableData::Table.new
-    table5           = TableData::Table.new
+    table1           = Tabledata::Table.new
+    table2           = Tabledata::Table.new
+    table3           = Tabledata::Table.new
+    table4           = Tabledata::Table.new
+    table5           = Tabledata::Table.new
     table1.accessors = nil
     table2.accessors = accessors2
     table3.accessors = accessors3
@@ -138,9 +138,9 @@ suite "TableData::Table" do
     accessor_columns1 = {}
     accessor_columns2 = {a: 0, b: 1, c: 2}
     accessor_columns3 = {a: 0, c: 2}
-    table1            = TableData::Table.new(accessors: accessors1)
-    table2            = TableData::Table.new(accessors: accessors2)
-    table3            = TableData::Table.new(accessors: accessors3)
+    table1            = Tabledata::Table.new(accessors: accessors1)
+    table2            = Tabledata::Table.new(accessors: accessors2)
+    table3            = Tabledata::Table.new(accessors: accessors3)
 
     assert_equal accessor_columns1, table1.accessor_columns
     assert_equal accessor_columns2, table2.accessor_columns
@@ -154,9 +154,9 @@ suite "TableData::Table" do
     column_accessors1 = {}
     column_accessors2 = {0 => :a, 1 => :b, 2 => :c}
     column_accessors3 = {0 => :a, 2 => :c}
-    table1            = TableData::Table.new(accessors: accessors1)
-    table2            = TableData::Table.new(accessors: accessors2)
-    table3            = TableData::Table.new(accessors: accessors3)
+    table1            = Tabledata::Table.new(accessors: accessors1)
+    table2            = Tabledata::Table.new(accessors: accessors2)
+    table3            = Tabledata::Table.new(accessors: accessors3)
 
     assert_equal column_accessors1, table1.column_accessors
     assert_equal column_accessors2, table2.column_accessors
@@ -164,13 +164,13 @@ suite "TableData::Table" do
   end
 
   test 'Table#name' do
-    table = TableData::Table.new(name: 'Just something')
+    table = Tabledata::Table.new(name: 'Just something')
 
     assert_equal 'Just something', table.name
   end
 
   test 'Table#accessors_from_headers!' do
-    table = TableData::Table.new header: ['Header', 'Just Something', '', 'Weird%Chars$']
+    table = Tabledata::Table.new header: ['Header', 'Just Something', '', 'Weird%Chars$']
     table.accessors_from_headers!
 
     assert_equal [:header, :just_something, nil, :weird_chars], table.accessors
@@ -178,10 +178,10 @@ suite "TableData::Table" do
 
   test 'Table#size' do
     data   = [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]]
-    table1 = TableData::Table.new data: data, has_headers: false, has_footer: false
-    table2 = TableData::Table.new data: data, has_headers: true,  has_footer: false
-    table3 = TableData::Table.new data: data, has_headers: false, has_footer: true
-    table4 = TableData::Table.new data: data, has_headers: true,  has_footer: true
+    table1 = Tabledata::Table.new data: data, has_headers: false, has_footer: false
+    table2 = Tabledata::Table.new data: data, has_headers: true,  has_footer: false
+    table3 = Tabledata::Table.new data: data, has_headers: false, has_footer: true
+    table4 = Tabledata::Table.new data: data, has_headers: true,  has_footer: true
 
     assert_equal 3, table1.size
     assert_equal 2, table2.size
@@ -190,9 +190,9 @@ suite "TableData::Table" do
   end
 
   test 'Table#column_count' do
-    table1 = TableData::Table.new
-    table2 = TableData::Table.new header: %w[]
-    table3 = TableData::Table.new header: %w[H1 H2 H3]
+    table1 = Tabledata::Table.new
+    table2 = Tabledata::Table.new header: %w[]
+    table3 = Tabledata::Table.new header: %w[H1 H2 H3]
 
     assert_equal nil, table1.column_count
     assert_equal 0,   table2.column_count
@@ -200,16 +200,16 @@ suite "TableData::Table" do
   end
 
   test 'Table#[]' do
-    table = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
+    table = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
 
-    assert_kind_of TableData::Row, table[0]
+    assert_kind_of Tabledata::Row, table[0]
     assert_kind_of NilClass,       table[3]
 
     assert_equal [1,2,3], table[0].to_a
   end
 
   test 'Table#cell' do
-    table = TableData.table_from_data([%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
+    table = Tabledata.table_from_data([%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
 
     assert_equal 'H1', table.fetch_cell(0, 0)
     assert_equal :b,   table.fetch_cell(1, 1)
@@ -220,16 +220,16 @@ suite "TableData::Table" do
   end
 
   test 'Table#row' do
-    table = TableData.table_from_data([%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
+    table = Tabledata.table_from_data([%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
 
-    assert_kind_of TableData::Row, table.row(0)
+    assert_kind_of Tabledata::Row, table.row(0)
     assert_equal   %w[H1 H2 H3],   table.row(0).to_a
 
     # TODO: I'm not sure how Table#row should work with regards to out-of-bounds access
   end
 
   test 'Table#column_accessor' do
-    table = TableData::Table.new(accessors: [:a, nil, :c])
+    table = Tabledata::Table.new(accessors: [:a, nil, :c])
 
     assert_equal :a,  table.column_accessor(0)
     assert_equal nil, table.column_accessor(1)
@@ -238,7 +238,7 @@ suite "TableData::Table" do
   end
 
   test 'Table#column_name' do
-    table = TableData.table_from_data([%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
+    table = Tabledata.table_from_data([%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
 
     assert_equal 'H1', table.column_name(0)
     assert_equal 'H2', table.column_name(1)
@@ -247,22 +247,22 @@ suite "TableData::Table" do
   end
 
   test 'Table#columns' do
-    table = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]])
+    table = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]])
 
     assert_kind_of Array,             table.columns
     assert_equal   3,                 table.columns.size
-    assert_kind_of TableData::Column, table.columns.first
+    assert_kind_of Tabledata::Column, table.columns.first
     assert_equal   ['H1', 1, :a],     table.columns[0].to_a
     assert_equal   ['H2', 2, :b],     table.columns[1].to_a
     assert_equal   ['H3', 3, :c],     table.columns[2].to_a
   end
 
   test 'Table#column' do
-    table = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true, accessors: [:a, :b, :c])
+    table = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true, accessors: [:a, :b, :c])
 
-    assert_kind_of TableData::Column, table.column(1)
-    assert_kind_of TableData::Column, table.column(:b)
-    assert_kind_of TableData::Column, table.column('H2')
+    assert_kind_of Tabledata::Column, table.column(1)
+    assert_kind_of Tabledata::Column, table.column(:b)
+    assert_kind_of Tabledata::Column, table.column('H2')
     assert_equal   ['H2', 2, :b],     table.column(1).to_a
     assert_equal   table.column(1),   table.column(:b)
     assert_equal   table.column(1),   table.column('H2')
@@ -270,7 +270,7 @@ suite "TableData::Table" do
   end
 
   test 'Table#index_for_accessor' do
-    table = TableData::Table.new accessors: [:a, :b, :c]
+    table = Tabledata::Table.new accessors: [:a, :b, :c]
 
     assert_equal 0,   table.index_for_accessor(:a)
     assert_equal 1,   table.index_for_accessor(:b)
@@ -279,7 +279,7 @@ suite "TableData::Table" do
   end
 
   test 'Table#index_for_header' do
-    table = TableData::Table.new header: %w[H1 H2 H3], has_headers: true
+    table = Tabledata::Table.new header: %w[H1 H2 H3], has_headers: true
 
     assert_equal 0,   table.index_for_header('H1')
     assert_equal 1,   table.index_for_header('H2')
@@ -288,42 +288,42 @@ suite "TableData::Table" do
   end
 
   test 'Table#accessors?' do
-    assert !TableData::Table.new(accessors: nil).accessors?
-    assert !TableData::Table.new(accessors: []).accessors?
-    assert !TableData::Table.new(accessors: [nil, nil, nil]).accessors?
-    assert TableData::Table.new(accessors: [:a, :b, :c]).accessors?
+    assert !Tabledata::Table.new(accessors: nil).accessors?
+    assert !Tabledata::Table.new(accessors: []).accessors?
+    assert !Tabledata::Table.new(accessors: [nil, nil, nil]).accessors?
+    assert Tabledata::Table.new(accessors: [:a, :b, :c]).accessors?
   end
 
   test 'Table#headers?' do
-    assert !TableData::Table.new(has_headers: false).headers?
-    assert TableData::Table.new(has_headers: true).headers?
+    assert !Tabledata::Table.new(has_headers: false).headers?
+    assert Tabledata::Table.new(has_headers: true).headers?
   end
 
   test 'Table#headers' do
-    assert_equal nil,          TableData::Table.new(has_headers: false).headers
-    assert_equal nil,          TableData::Table.new(data: [], has_headers: true).headers
-    assert_equal %w[H1 H2 H3], TableData::Table.new(header: %w[H1 H2 H3]).headers.to_a
+    assert_equal nil,          Tabledata::Table.new(has_headers: false).headers
+    assert_equal nil,          Tabledata::Table.new(data: [], has_headers: true).headers
+    assert_equal %w[H1 H2 H3], Tabledata::Table.new(header: %w[H1 H2 H3]).headers.to_a
   end
 
   test 'Table#footer?' do
-    assert !TableData::Table.new(has_footer: false).footer?
-    assert TableData::Table.new(has_footer: true).footer?
+    assert !Tabledata::Table.new(has_footer: false).footer?
+    assert Tabledata::Table.new(has_footer: true).footer?
   end
 
   test 'Table#footer' do
-    assert_equal nil,          TableData::Table.new(has_headers: false).headers
-    assert_equal nil,          TableData::Table.new(data: [], has_headers: true).headers
-    assert_equal %w[H1 H2 H3], TableData::Table.new(header: %w[H1 H2 H3]).headers.to_a
+    assert_equal nil,          Tabledata::Table.new(has_headers: false).headers
+    assert_equal nil,          Tabledata::Table.new(data: [], has_headers: true).headers
+    assert_equal %w[H1 H2 H3], Tabledata::Table.new(header: %w[H1 H2 H3]).headers.to_a
   end
 
   test 'Table#body' do
-    table1 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
-    table2 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
-    table3 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
-    table4 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
+    table1 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
+    table2 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
+    table3 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
+    table4 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
 
     assert_kind_of Array,          table1.body
-    assert_kind_of TableData::Row, table1.body.first
+    assert_kind_of Tabledata::Row, table1.body.first
 
     assert_equal [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], table1.body.map(&:to_a)
     assert_equal [%w[H1 H2 H3], [1,2,3]],               table2.body.map(&:to_a)
@@ -332,7 +332,7 @@ suite "TableData::Table" do
   end
 
   test 'Table#<<' do
-    table = TableData::Table.new(has_headers: false)
+    table = Tabledata::Table.new(has_headers: false)
 
     assert_equal 0,  table.size
     assert_equal [], table.to_a
@@ -354,10 +354,10 @@ suite "TableData::Table" do
   end
 
   test 'Table#each' do
-    table1 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
-    table2 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
-    table3 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
-    table4 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
+    table1 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
+    table2 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
+    table3 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
+    table4 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
 
     result1 = []
     result2 = []
@@ -376,10 +376,10 @@ suite "TableData::Table" do
   end
 
   test 'Table#each_row' do
-    table1 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
-    table2 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
-    table3 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
-    table4 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
+    table1 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
+    table2 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
+    table3 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
+    table4 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
 
     result1 = []
     result2 = []
@@ -398,10 +398,10 @@ suite "TableData::Table" do
   end
 
   test 'Table#each_column' do
-    table1 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
-    table2 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
-    table3 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
-    table4 = TableData.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
+    table1 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
+    table2 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
+    table3 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
+    table4 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
 
     result1 = []
     result2 = []
@@ -429,15 +429,15 @@ suite "TableData::Table" do
 
   test 'Table#format' do
     # NOTE: We don't test the presenters themselves here
-    table = TableData::Table.new
+    table = Tabledata::Table.new
 
-    table.format(:xls) # allow TableData to load the presenter
-    assert_kind_of TableData::Presenters::Excel, table.format(:xls)
-    table.format(:xlsx) # allow TableData to load the presenter
-    assert_kind_of TableData::Presenters::Excel, table.format(:xlsx)
-    table.format(:csv) # allow TableData to load the presenter
-    assert_kind_of TableData::Presenters::CSV,   table.format(:csv)
-    table.format(:pdf) # allow TableData to load the presenter
-    assert_kind_of TableData::Presenters::PDF,   table.format(:pdf)
+    table.format(:xls) # allow Tabledata to load the presenter
+    assert_kind_of Tabledata::Presenters::Excel, table.format(:xls)
+    table.format(:xlsx) # allow Tabledata to load the presenter
+    assert_kind_of Tabledata::Presenters::Excel, table.format(:xlsx)
+    table.format(:csv) # allow Tabledata to load the presenter
+    assert_kind_of Tabledata::Presenters::CSV,   table.format(:csv)
+    table.format(:pdf) # allow Tabledata to load the presenter
+    assert_kind_of Tabledata::Presenters::PDF,   table.format(:pdf)
   end
 end

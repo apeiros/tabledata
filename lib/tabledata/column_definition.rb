@@ -2,7 +2,7 @@
 
 require 'base64'
 
-module TableData
+module Tabledata
   class ColumnDefinition
     attr_reader :index
     attr_reader :accessor

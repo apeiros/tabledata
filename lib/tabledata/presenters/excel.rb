@@ -1,13 +1,13 @@
 # encoding: utf-8
 
-require 'table_data/presenter'
-TableData.require_library 'spreadsheet', "To generate Excel files, the gem 'spreadsheet' must be installed."
-require 'table_data/patches/spreadsheet'
+require 'tabledata/presenter'
+Tabledata.require_library 'spreadsheet', "To generate Excel files, the gem 'spreadsheet' must be installed."
+require 'tabledata/patches/spreadsheet'
 
 
-module TableData
+module Tabledata
   module Presenters
-    class Excel < TableData::Presenter
+    class Excel < Tabledata::Presenter
       Bold = Spreadsheet::Format.new weight: :bold
 
       def document

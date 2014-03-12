@@ -1,9 +1,9 @@
 # encoding: utf-8
 
-require 'table_data/table'
-require 'table_data/coerced_row'
+require 'tabledata/table'
+require 'tabledata/coerced_row'
 
-module TableData
+module Tabledata
 
   class CustomTable < Table
     class << self

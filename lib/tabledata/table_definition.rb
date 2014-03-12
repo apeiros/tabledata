@@ -1,13 +1,13 @@
 # encoding: utf-8
 
-require 'table_data/parser'
-require 'table_data/row'
-require 'table_data/column'
-require 'table_data/detection'
-require 'table_data/exceptions'
-require 'table_data/presenter'
+require 'tabledata/parser'
+require 'tabledata/row'
+require 'tabledata/column'
+require 'tabledata/detection'
+require 'tabledata/exceptions'
+require 'tabledata/presenter'
 
-module TableData
+module Tabledata
 
   # Table represents tabular data and provides various ways to create one,
   # read from it and represent it in a different format.
@@ -23,7 +23,7 @@ module TableData
     def create_table_class
       table_definition = self
 
-      Class.new(TableData::CustomTable) do
+      Class.new(Tabledata::CustomTable) do
         @definition = table_definition
       end
     end

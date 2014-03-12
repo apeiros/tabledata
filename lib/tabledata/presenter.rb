@@ -1,17 +1,17 @@
 # encoding: utf-8
 
-module TableData
+module Tabledata
   class Presenter
     @presenters = {
       # format:  [require, constant, multitable_capable, default_options]
-      csv:       ['tabledata/presenters/csv',   [:TableData, :Presenters, :CSV],   false, {}],
-      excel_csv: ['tabledata/presenters/csv',   [:TableData, :Presenters, :CSV],   false, {column_separator: ";", row_separator: "\r\n"}],
-      tab:       ['tabledata/presenters/csv',   [:TableData, :Presenters, :CSV],   false, {column_separator: "\t"}],
-      xls:       ['tabledata/presenters/excel', [:TableData, :Presenters, :Excel], true,  {suffix: '.xls'}],
-      xlsx:      ['tabledata/presenters/excel', [:TableData, :Presenters, :Excel], true,  {suffix: '.xlsx'}],
-      excel:     ['tabledata/presenters/excel', [:TableData, :Presenters, :Excel], true,  {suffix: '.xlsx'}],
-      html:      ['tabledata/presenters/html',  [:TableData, :Presenters, :HTML],  false, {}],
-      pdf:       ['tabledata/presenters/pdf',   [:TableData, :Presenters, :PDF],   false, {}],
+      csv:       ['tabledata/presenters/csv',   [:Tabledata, :Presenters, :CSV],   false, {}],
+      excel_csv: ['tabledata/presenters/csv',   [:Tabledata, :Presenters, :CSV],   false, {column_separator: ";", row_separator: "\r\n"}],
+      tab:       ['tabledata/presenters/csv',   [:Tabledata, :Presenters, :CSV],   false, {column_separator: "\t"}],
+      xls:       ['tabledata/presenters/excel', [:Tabledata, :Presenters, :Excel], true,  {suffix: '.xls'}],
+      xlsx:      ['tabledata/presenters/excel', [:Tabledata, :Presenters, :Excel], true,  {suffix: '.xlsx'}],
+      excel:     ['tabledata/presenters/excel', [:Tabledata, :Presenters, :Excel], true,  {suffix: '.xlsx'}],
+      html:      ['tabledata/presenters/html',  [:Tabledata, :Presenters, :HTML],  false, {}],
+      pdf:       ['tabledata/presenters/pdf',   [:Tabledata, :Presenters, :PDF],   false, {}],
     }
 
     def self.presenter_exists?(name)
