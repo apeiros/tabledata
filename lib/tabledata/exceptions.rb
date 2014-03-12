@@ -12,13 +12,13 @@ module TableData
   end
   class InvalidColumnCount < ArgumentError
     include Exception
-  end
-  class InvalidColumnSpecifier < ArgumentError
-    include Exception
 
     def initialize(row_num, expected, actual)
       super("Invalid column count in row #{row_num} (#{expected} expected, but has #{actual})")
     end
+  end
+  class InvalidColumnSpecifier < ArgumentError
+    include Exception
   end
   class InvalidColumnName < InvalidColumnSpecifier; end
   class InvalidColumnAccessor < InvalidColumnSpecifier; end
