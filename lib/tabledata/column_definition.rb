@@ -18,11 +18,12 @@ module Tabledata
 
     class StringProcessor
       def initialize(options)
-        options     = options.dup
-        size_range  = options.delete(:size)
-        @min_length = options.delete(:min_length) || (size_range && size_range.begin) || nil
-        @max_length = options.delete(:max_length) || (size_range && size_range.end) || nil
-        @pattern    = options.delete(:pattern)
+        options      = options.dup
+        length_range = options.delete(:length)
+        length_range = length_range..length_range if length_range.is_a?(Integer)
+        @min_length  = options.delete(:min_length) || (length_range && length_range.begin) || nil
+        @max_length  = options.delete(:max_length) || (length_range && length_range.end) || nil
+        @pattern     = options.delete(:pattern)
 
         InvalidOptions.verify!(__method__, options, [:size, :min_length, :max_length, :pattern])
       end

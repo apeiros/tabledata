@@ -10,6 +10,14 @@ module Tabledata
       attr_reader :definition
     end
 
+    def self.table_name
+      @definition.table_name
+    end
+
+    def self.identifier
+      @definition.identifier
+    end
+
     attr_reader :table_errors, :original_data, :original_rows
 
     def initialize(options)

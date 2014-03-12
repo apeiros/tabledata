@@ -13,10 +13,12 @@ module Tabledata
   # read from it and represent it in a different format.
   class TableDefinition
     attr_reader :identifier
+    attr_reader :table_name
     attr_reader :columns
 
-    def initialize(identifier, columns)
+    def initialize(identifier, table_name, columns)
       @identifier = identifier
+      @table_name = table_name || identifier.to_s
       @columns    = columns
     end
 

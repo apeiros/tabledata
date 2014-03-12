@@ -10,8 +10,9 @@ module Tabledata
       attr_reader :identifier
       attr_reader :columns
 
-      def initialize(identifier=nil, &block)
+      def initialize(identifier=nil, table_name=nil, &block)
         @identifier       = identifier
+        @table_name       = table_name
         @column_defaults  = {}
         @current_index    = -1
         @occupied_indices = {}
@@ -22,7 +23,7 @@ module Tabledata
       end
 
       def definition
-        Tabledata::TableDefinition.new(@identifier, @columns)
+        Tabledata::TableDefinition.new(@identifier, @table_name, @columns)
       end
 
       def column_defaults(value)
