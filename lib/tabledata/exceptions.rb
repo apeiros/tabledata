@@ -7,6 +7,18 @@ module TableData
   module Exception
   end
 
+  class InvalidOptions < ArgumentError
+    include Exception
+
+    def self.verify!(method_name, options, valid_keys)
+      invalid_keys = options.keys-valid_keys
+      raise new(method_name, invalid_keys) unless invalid_keys.empty?
+    end
+
+    def initialize(method_name, invalid_keys)
+      super("Invalid options for method #{method_name}: #{invalid_keys.inspect[1..-2]}")
+    end
+  end
   class InvalidFileType < ArgumentError
     include Exception
   end
