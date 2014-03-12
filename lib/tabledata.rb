@@ -4,6 +4,7 @@ require 'stringio'
 require 'tabledata/version'
 require 'tabledata/table'
 require 'tabledata/tables'
+require 'tabledata/dsls/table_definition'
 require 'tabledata/exceptions'
 
 # Handle tabular data
@@ -15,7 +16,7 @@ require 'tabledata/exceptions'
 module TableData
   module_function
 
-  # @see TableData::Table.new Full documentation
+  # @see TableData::Table#initialize Full documentation
   # @see TableData::Table.from_file Full documentation
   #
   # If a :file option is present, it uses #{TableData::Table.from_file},
@@ -33,32 +34,26 @@ module TableData
     end
   end
 
-  # @see TableData::Table.from_file Full documentation
-  #
-  # @return [TableData::Table]
-  def table_from_file(*args)
-    Table.from_file(*args)
-  end
-
-  # @see TableData::Table.from_data Full documentation
-  #
-  # @return [TableData::Table]
-  def table_from_data(*args)
-    Table.from_data(*args)
-  end
-
+  # @see TableData::Tables#initialize Full documentation
   # @see TableData::Tables.from_file Full documentation
   #
-  # @return [TableData::Tables]
-  def tables_from_file(*args)
-    Tables.from_file(*args)
-  end
-
-  # @see TableData::Tables.from_data Full documentation
+  # If a :file option is present, it uses #{TableData::Table.from_file},
+  # otherwise #{TableData::Tables.new}.
   #
   # @return [TableData::Tables]
-  def tables_from_data(*args)
-    Tables.from_data(*args)
+  def tables(options)
+    if options.has_key?(:file)
+      options = options.dup
+      path   = options.delete(:file)
+
+      Tables.from_file(path, options)
+    else
+      Tables.new(options)
+    end
+  end
+
+  def define_table(*args, &block)
+    Dsls::TableDefinition.new(*args, &block).definition.create_table_class
   end
 
   # @private
