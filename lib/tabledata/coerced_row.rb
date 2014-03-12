@@ -8,7 +8,7 @@ module Tabledata
     attr_reader :column_errors
     attr_reader :row_errors
 
-    def initialize(table, index, data, column_errors, row_errors)
+    def initialize(table, index, data, column_errors={}, row_errors=[])
       super(table, index, data)
       @column_errors = column_errors
       @row_errors    = row_errors
@@ -36,7 +36,7 @@ module Tabledata
     end
 
     def valid?
-      @column_errors.each_value.all?(&:empty?) && @row_errors.empty?
+      @column_errors.empty? && @row_errors.empty?
     end
   end
 end

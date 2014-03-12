@@ -35,7 +35,7 @@ module Tabledata
         coerced_values = *row.map.with_index { |value, column_index|
           column = columns[column_index]
           value, errors = column.coerce(value)
-          column_errors[column.accessor] = errors
+          column_errors[column.accessor] = errors unless errors.empty?
         }
         row_errors = []
         CoercedRow.new(self, row_index, coerced_values, column_errors, row_errors)
@@ -60,7 +60,7 @@ module Tabledata
         coerced_values = *row.map.with_index { |value, column_index|
           column                         = columns[column_index]
           value, errors                  = column.coerce(value)
-          column_errors[column.accessor] = errors
+          column_errors[column.accessor] = errors unless errors.empty?
 
           value
         }
