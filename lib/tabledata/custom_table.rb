@@ -18,11 +18,25 @@ module Tabledata
       @definition.identifier
     end
 
+    def self.from_file(path, options=nil)
+      options        ||= {}
+      options[:name] ||= @definition.table_name
+
+      super(path, options)
+    end
+
     attr_reader :table_errors, :original_data, :original_rows
 
     def initialize(options)
-      columns = self.class.definition.columns
-      options = options.merge(accessors: columns.map(&:accessor))
+      definition = self.class.definition
+      columns    = definition.columns
+      options    = options.merge(accessors: columns.map(&:accessor), name: definition.table_name) { |key,v1,v2|
+        if key == :accessors
+          raise "Can't handle reordering of accessors - don't redefine accessors in CustomTables for now"
+        elsif key == :name
+          v1 || v2
+        end
+      }
 
       super(options)
 
