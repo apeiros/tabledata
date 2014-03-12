@@ -5,7 +5,7 @@
 # Encoding::UTF_8
 # Encoding::ISO8859_15
 
-require 'tabledata/exceptions'
+require 'table_data/exceptions'
 
 module TableData
 

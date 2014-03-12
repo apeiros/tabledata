@@ -1,7 +1,7 @@
 # encoding: utf-8
 
-require 'tabledata/table'
-require 'tabledata/coerced_row'
+require 'table_data/table'
+require 'table_data/coerced_row'
 
 module TableData
 

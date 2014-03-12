@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'tabledata/exceptions'
+require 'table_data/exceptions'
 
 module TableData
 

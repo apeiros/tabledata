@@ -1,11 +1,11 @@
 # encoding: utf-8
 
-require 'tabledata/parser'
-require 'tabledata/row'
-require 'tabledata/column'
-require 'tabledata/detection'
-require 'tabledata/exceptions'
-require 'tabledata/presenter'
+require 'table_data/parser'
+require 'table_data/row'
+require 'table_data/column'
+require 'table_data/detection'
+require 'table_data/exceptions'
+require 'table_data/presenter'
 
 module TableData
 

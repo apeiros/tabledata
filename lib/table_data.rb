@@ -1,11 +1,11 @@
 # encoding: utf-8
 
 require 'stringio'
-require 'tabledata/version'
-require 'tabledata/table'
-require 'tabledata/tables'
-require 'tabledata/dsls/table_definition'
-require 'tabledata/exceptions'
+require 'table_data/version'
+require 'table_data/table'
+require 'table_data/tables'
+require 'table_data/dsls/table_definition'
+require 'table_data/exceptions'
 
 # Handle tabular data
 #

@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'tabledata/presenter'
+require 'table_data/presenter'
 TableData.require_library 'prawn', "To generate PDF files, the gem 'prawn' must be installed."
 
 

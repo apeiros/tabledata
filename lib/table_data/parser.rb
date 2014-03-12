@@ -1,7 +1,7 @@
 # encoding: utf-8
 
-require 'tabledata/detection'
-require 'tabledata/table'
+require 'table_data/detection'
+require 'table_data/table'
 require 'stringio'
 
 module TableData

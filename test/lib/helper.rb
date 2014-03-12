@@ -4,7 +4,7 @@ require 'stringio'
 require 'yaml'
 require 'test/unit/assertions'
 require 'fileutils'
-require 'tabledata'
+require 'table_data'
 
 module Kernel
   module_function

@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'tabledata/table'
+require 'table_data/table'
 
 module TableData
 

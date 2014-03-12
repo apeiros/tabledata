@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'tabledata/presenter'
+require 'table_data/presenter'
 require 'csv'
 
 module TableData

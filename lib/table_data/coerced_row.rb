@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'tabledata/row'
+require 'table_data/row'
 
 module TableData
   class CoercedRow < Row

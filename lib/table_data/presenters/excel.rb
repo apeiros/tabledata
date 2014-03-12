@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-require 'tabledata/presenter'
+require 'table_data/presenter'
 TableData.require_library 'spreadsheet', "To generate Excel files, the gem 'spreadsheet' must be installed."
-require 'tabledata/patches/spreadsheet'
+require 'table_data/patches/spreadsheet'
 
 
 module TableData

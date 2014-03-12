@@ -1,8 +1,8 @@
 # encoding: utf-8
 
-require 'tabledata/column_definition'
-require 'tabledata/table_definition'
-require 'tabledata/custom_table'
+require 'table_data/column_definition'
+require 'table_data/table_definition'
+require 'table_data/custom_table'
 
 module TableData
   module Dsls
