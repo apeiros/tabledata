@@ -50,13 +50,18 @@ module Tabledata
           when /\A\s*\z/
             processed = nil
           when String
-            processed = Integer(value, 10)
+            begin
+              processed = Integer(value, 10)
+            rescue ArgumentError
+              processed = nil
+              errors << [:not_an_integer, {value: value}]
+            end
           when Integer
             processed = value
           when Numeric
             processed = value.round
             difference = value-processed
-            errors << [:not_an_integer, {rounded: processed, unrounded: value, difference: difference, absolute_difference: difference.abs}] if difference.abs > Float::EPSILON
+            errors << [:not_an_integral_number, {rounded: processed, unrounded: value, difference: difference, absolute_difference: difference.abs}] if difference.abs > Float::EPSILON
           else
             begin
               processed = Integer(value)
