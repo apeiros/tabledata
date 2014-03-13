@@ -1,10 +1,10 @@
 suite "Tabledata::Table" do
   test 'Table::from_data' do
     assert_kind_of Tabledata::Table, Tabledata::Table.from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
-    assert_kind_of Tabledata::Table, Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
+    assert_kind_of Tabledata::Table, Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
 
-    table1 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
-    table2 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false)
+    table1 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
+    table2 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false)
 
     assert table1.headers?
     assert !table2.headers?
@@ -16,14 +16,14 @@ suite "Tabledata::Table" do
 
   test 'Table::from_file' do
     assert_kind_of Tabledata::Table, Tabledata::Table.from_file(test_file('test1.xls'))
-    assert_kind_of Tabledata::Table, Tabledata.table_from_file(test_file('test1.xls'))
+    assert_kind_of Tabledata::Table, Tabledata.table(file: test_file('test1.xls'))
 
     expected = [
       ["First Name", "Last Name", "Age", "Birthday",            "Profession",   "Street",             "Street Name",    "Street Number", "ZIP",   "City",     "E-Mail"],
       ["Peter",      "Parker",    30.0,  Date.civil(1973,1,31), "Photographer", "410 Chelsea Street", "Chelsea Street", 410.0,           10307.0, "New York", "peter.parker@example.com"],
     ]
-    table1 = Tabledata.table_from_file(test_file('test1.xls'))
-    table2 = Tabledata.table_from_file(test_file('test1.xlsx'))
+    table1 = Tabledata.table(file: test_file('test1.xls'))
+    table2 = Tabledata.table(file: test_file('test1.xlsx'))
 
     assert_equal expected, table1.to_a
     assert_equal expected, table2.to_a
@@ -200,7 +200,7 @@ suite "Tabledata::Table" do
   end
 
   test 'Table#[]' do
-    table = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
+    table = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true)
 
     assert_kind_of Tabledata::Row, table[0]
     assert_kind_of NilClass,       table[3]
@@ -209,7 +209,7 @@ suite "Tabledata::Table" do
   end
 
   test 'Table#cell' do
-    table = Tabledata.table_from_data([%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
+    table = Tabledata.table(data: [%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
 
     assert_equal 'H1', table.fetch_cell(0, 0)
     assert_equal :b,   table.fetch_cell(1, 1)
@@ -220,7 +220,7 @@ suite "Tabledata::Table" do
   end
 
   test 'Table#row' do
-    table = Tabledata.table_from_data([%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
+    table = Tabledata.table(data: [%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
 
     assert_kind_of Tabledata::Row, table.row(0)
     assert_equal   %w[H1 H2 H3],   table.row(0).to_a
@@ -238,7 +238,7 @@ suite "Tabledata::Table" do
   end
 
   test 'Table#column_name' do
-    table = Tabledata.table_from_data([%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
+    table = Tabledata.table(data: [%w[H1 H2 H3], [:a, :b, :c]], has_headers: true)
 
     assert_equal 'H1', table.column_name(0)
     assert_equal 'H2', table.column_name(1)
@@ -247,7 +247,7 @@ suite "Tabledata::Table" do
   end
 
   test 'Table#columns' do
-    table = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]])
+    table = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]])
 
     assert_kind_of Array,             table.columns
     assert_equal   3,                 table.columns.size
@@ -258,7 +258,7 @@ suite "Tabledata::Table" do
   end
 
   test 'Table#column' do
-    table = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true, accessors: [:a, :b, :c])
+    table = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true, accessors: [:a, :b, :c])
 
     assert_kind_of Tabledata::Column, table.column(1)
     assert_kind_of Tabledata::Column, table.column(:b)
@@ -317,10 +317,10 @@ suite "Tabledata::Table" do
   end
 
   test 'Table#body' do
-    table1 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
-    table2 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
-    table3 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
-    table4 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
+    table1 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
+    table2 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
+    table3 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
+    table4 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
 
     assert_kind_of Array,          table1.body
     assert_kind_of Tabledata::Row, table1.body.first
@@ -354,10 +354,10 @@ suite "Tabledata::Table" do
   end
 
   test 'Table#each' do
-    table1 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
-    table2 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
-    table3 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
-    table4 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
+    table1 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
+    table2 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
+    table3 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
+    table4 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
 
     result1 = []
     result2 = []
@@ -376,10 +376,10 @@ suite "Tabledata::Table" do
   end
 
   test 'Table#each_row' do
-    table1 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
-    table2 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
-    table3 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
-    table4 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
+    table1 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
+    table2 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
+    table3 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
+    table4 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
 
     result1 = []
     result2 = []
@@ -398,10 +398,10 @@ suite "Tabledata::Table" do
   end
 
   test 'Table#each_column' do
-    table1 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
-    table2 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
-    table3 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
-    table4 = Tabledata.table_from_data([%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
+    table1 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: false)
+    table2 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: false, has_footer: true)
+    table3 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: false)
+    table4 = Tabledata.table(data: [%w[H1 H2 H3], [1,2,3], [:a, :b, :c]], has_headers: true,  has_footer: true)
 
     result1 = []
     result2 = []
