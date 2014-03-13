@@ -32,10 +32,10 @@ module Tabledata
       Tabledata.require_library 'roo', "To parse Excel .xls files, the gem 'roo' must be installed." # TODO: get rid of that dependency
       #Tabledata.require_library 'iconv', "To parse Excel .xls files, the gem 'iconv' must be installed." # TODO: get rid of that dependency
 
-      options  = options.dup
-      document = Roo::Excel.new(file)
-      sheet    = document.sheet(options.delete(:sheet) || document.default_sheet)
-      excel_sheet_to_table(sheet, options)
+      options    = options.dup
+      document   = Roo::Excel.new(file)
+      sheet_name = options.delete(:sheet) || document.default_sheet
+      excel_sheet_to_table(document.sheet(sheet_name), sheet_name, options)
     end
 
     # @private
@@ -44,10 +44,10 @@ module Tabledata
     def table_from_xlsx(file, options=nil)
       Tabledata.require_library 'roo', "To parse Excel .xlsx files, the gem 'roo' must be installed." # TODO: get rid of that dependency
 
-      options  = options.dup
-      document = Roo::Excelx.new(file)
-      sheet    = document.sheet(options.delete(:sheet) || document.default_sheet)
-      excel_sheet_to_table(sheet, options)
+      options    = options.dup
+      document   = Roo::Excelx.new(file)
+      sheet_name = options.delete(:sheet) || document.default_sheet
+      excel_sheet_to_table(document.sheet(sheet_name), sheet_name, options)
     end
 
     # @private

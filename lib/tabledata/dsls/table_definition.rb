@@ -35,13 +35,14 @@ module Tabledata
         options             = args.last.is_a?(Hash) ? @column_defaults.merge(args.pop.dup) : @column_defaults.dup
         default             = options.delete(:default) { nil }
         allow_nil           = options.delete(:nil) { true }
+        pre_validator       = options.delete(:pre_validate)
         adaptor             = options.delete(:adapt)
         validator           = options.delete(:validate)
-        pre_validator       = options.delete(:pre_validate)
+        presenter           = options.delete(:present)
         empty_string_is_nil = options.delete(:empty_string_is_nil) { false }
         strip               = options.delete(:strip) { false }
         index               = options.delete(:index) { next_index }
-        column              = ColumnDefinition.new(index, accessor, header, type, allow_nil, default, strip, empty_string_is_nil, pre_validator, adaptor, validator, options)
+        column              = ColumnDefinition.new(index, accessor, header, type, allow_nil, default, strip, empty_string_is_nil, pre_validator, adaptor, validator, presenter, options)
 
         @occupied_indices[index] = true
         @columns << column
