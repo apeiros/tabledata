@@ -16,7 +16,7 @@ module Tabledata
     include Enumerable
 
     # A list of options which are valid to be passed to some of the constructors.
-    ValidOptions           = [:has_headers, :has_footer, :file_type, :name, :table_class, :accessors, :data, :header, :body, :footer]
+    ValidOptions           = [:has_headers, :has_footer, :file_type, :name, :table_class, :table_classes, :accessors, :data, :header, :body, :footer]
 
     # Options which are invalid to be passed to Tabledata::Table.from_file.
     InvalidFromFileOptions = [:data, :header, :body, :footer]
