@@ -22,6 +22,9 @@ module Tabledata
       options[:table_class] ||= Tabledata::Table
       options[:file_type]   ||= Detection.file_type_from_path(path)
       options[:name]        ||= File.basename(path).sub(/\.(?:csv|xlsx?)\z/, '')
+      if options[:table_classes].is_a?(Array)
+        options[:table_classes] = Hash[options[:table_classes].map { |table_class| [table_class.table_name, table_class] }]
+      end
 
       case options[:file_type]
         when :csv then Parser.parse_csv(path, options)
