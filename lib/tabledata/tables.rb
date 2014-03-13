@@ -18,7 +18,7 @@ module Tabledata
     end
 
     def self.from_file(path, options=nil)
-      options ||= {}
+      options = options ? options.dup : {}
       options[:table_class] ||= Tabledata::Table
       options[:file_type]   ||= Detection.file_type_from_path(path)
       options[:name]        ||= File.basename(path).sub(/\.(?:csv|xlsx?)\z/, '')
