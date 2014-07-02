@@ -32,7 +32,6 @@ Gem::Specification.new do |s|
   end
 
   s.add_dependency 'spreadsheet', '>= 0.9.7'
-  s.add_dependency 'prawn',       '>= 0.15.0'
   s.add_dependency 'roo',         '>= 1.13.2'
 
   s.required_ruby_version     = ">= 1.9.2"
