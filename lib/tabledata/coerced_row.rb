@@ -14,6 +14,10 @@ module Tabledata
       @row_errors    = row_errors
     end
 
+    def present(media)
+      @data.zip(@table.class.definition.columns).map { |value, column| column.present(value, media) }
+    end
+
     # Allow reading and writing cell values by their accessor name.
     def method_missing(name, *args, &block)
       return super unless @table.accessors?

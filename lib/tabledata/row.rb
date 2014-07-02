@@ -194,8 +194,12 @@ module Tabledata
 
     # @return [Hash]
     #   A hash with the accessors as key and the cell values as values.
-    def to_h
+    def to_h(*)
       Hash[@table.accessor_columns.map { |accessor, index| [accessor, @data[index]] }]
+    end
+
+    def present(*)
+      to_a
     end
 
     # @return [Array]

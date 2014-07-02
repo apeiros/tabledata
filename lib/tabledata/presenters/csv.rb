@@ -22,7 +22,7 @@ module Tabledata
       def string(options=nil)
         ::CSV.generate(csv_options) do |csv|
           @table.each_row do |row|
-            csv << row.to_a
+            csv << row.present(:csv)
           end
         end
       end
@@ -30,7 +30,7 @@ module Tabledata
       def write(path, options=nil)
         ::CSV.open(path, 'wb', csv_options) do |csv|
           @table.each_row do |row|
-            csv << row.to_a
+            csv << row.present(:csv)
           end
         end
       end

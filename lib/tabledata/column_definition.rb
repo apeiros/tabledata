@@ -34,6 +34,11 @@ module Tabledata
       @processor           = Tabledata::Processors.fetch(type).new(options)
     end
 
+    def present(value, media)
+      @presenter ? @presenter[media].call(value) : value
+    end
+
+    # strip, empty-string-to-nil, user-defined pre-validate, type-defined pre-validate, user-defined adaptor, defaultize, type-defined adaptor, user-defined validate
     def coerce(value)
       errors  = []
       adapted = nil
