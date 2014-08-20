@@ -11,13 +11,14 @@ require 'tabledata/processors/binary_processor'
 module Tabledata
   module Processors
     @processors = {
-      string:   StringProcessor,
-      integer:  IntegerProcessor,
-      float:    FloatProcessor,
-      datetime: DateTimeProcessor,
-      date:     DateProcessor,
-      boolean:  BooleanProcessor,
-      binary:   BinaryProcessor,
+      calculated: nil,
+      string:     StringProcessor,
+      integer:    IntegerProcessor,
+      float:      FloatProcessor,
+      datetime:   DateTimeProcessor,
+      date:       DateProcessor,
+      boolean:    BooleanProcessor,
+      binary:     BinaryProcessor,
     }
 
     def self.fetch(*args, &block)
