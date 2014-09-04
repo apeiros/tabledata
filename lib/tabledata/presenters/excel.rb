@@ -17,7 +17,8 @@ module Tabledata
           sheet = document.create_worksheet(name: worksheet_name(id))
           sheet.row(0).default_format = Bold if @options[:bold_headers]
 
-          table.data.each_with_index do |row, row_nr|
+          table.each_row do |row|
+            row_nr = row.index
             row.present(:excel).each_with_index do |col, col_nr|
               sheet[row_nr, col_nr] = col
             end

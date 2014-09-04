@@ -446,7 +446,7 @@ module Tabledata
     def each_row(&block)
       return enum_for(__method__) unless block
 
-      @data.each(&block)
+      @rows.each(&block)
 
       self
     end
