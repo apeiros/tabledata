@@ -112,5 +112,16 @@ module Tabledata
     def valid?
       @table_errors.empty? && @rows.all?(&:valid?)
     end
+
+    #
+    # Returns the definition of the column
+    #
+    # @param [Integer, Symbol] index_or_accessor of the column
+    #
+    # @return [Tabledata::ColumnDefinition] of the column
+    #
+    def column_definition(index_or_accessor)
+      self.class.definition.column(index_or_accessor)
+    end
   end
 end
