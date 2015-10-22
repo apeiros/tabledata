@@ -6,8 +6,8 @@ module Tabledata
       def initialize(options)
         options     = options.dup
         value_range = options.delete(:between)
-        @min        = options.delete(:min) || (value_range && value_range.begin) || 0
-        @max        = options.delete(:max) || (value_range && value_range.end) || 0
+        @min        = options.delete(:min) || (value_range && value_range.begin) || false
+        @max        = options.delete(:max) || (value_range && value_range.end) || false
       end
 
       def call(value, errors)
@@ -36,8 +36,8 @@ module Tabledata
         end
 
         if processed
-          errors << [:too_small, {min: @min, actual: processed}] if @min_length && processed < @min_length
-          errors << [:too_big, {max: @max, actual: processed}] if @max_length && processed > @max_length
+          errors << [:too_small, { min: @min, actual: processed }] if @min && processed < @min
+          errors << [:too_big,   { max: @max, actual: processed }] if @max && processed > @max
         end
 
         processed
